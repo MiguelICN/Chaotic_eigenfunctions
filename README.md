@@ -6,5 +6,4 @@ Try to classify the chaotic eigenfunctions of the Floquet operator in order to a
  "Universal intensity statistics of multifractal resonance states"
 
 Are all eigenfunctions scarred? are the patterns observed random or scarlets?
-
-
+Why does it work for dissipative systems?
