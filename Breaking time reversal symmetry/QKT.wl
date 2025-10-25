@@ -9,8 +9,9 @@ BeginPackage["QKT`"];
 generateSpinOperators::usage = "generateSpinOperators[J] returns an association of {Sx, Sy, Sz, Sx2} spin operators for total spin J.";
 Floq::usage = "Floq[J, \[Alpha], k, \[Tau]] returns the Floquet operator with twist along Sz.";
 Floqn::usage = "Floqn[J, \[Alpha], k, nVec] returns the Floquet operator with twist along an arbitrary axis defined by nVec.";
-generateCoherentStateCompiler::usage = 
-  "generateCoherentStateCompiler[] returns a compiled function that generates spin coherent states.";
+Floqb::usage = "Floqb[J,\[Alpha],\[Tau],k,\[Gamma]] returns the Floquet operator which breaks 1 time reversal symmetries, COE";
+Floqbn::usage = "Floqb[J,\[Alpha],k,nVec,\[Gamma]] returns the Floquet operator which can break both time reversal symmetries, CUE";
+generateCoherentStateCompiler::usage ="generateCoherentStateCompiler[] returns a compiled function that generates spin coherent states.";
 
 Begin["`Private`"];
 
@@ -31,20 +32,6 @@ generateSpinOperators[j_] := <|
   "Sz" -> sz[j],
   "Sx2" -> sx2[j]
 |>;
-
-(* Floquet: original with twist along Sz *)
-kickPart[j_, k_] := kickPart[j, k] = MatrixExp[(-I k/(2 j)) sx2[j]];
-twistPart[j_, \[Alpha]_, \[Tau]_] := MatrixExp[(-I \[Alpha] \[Tau]) sz[j]];
-Floq[j_, \[Alpha]_, k_, \[Tau]_] := kickPart[j, k] . twistPart[j, \[Alpha], \[Tau]];
-
-(* Floquet: generalized twist along arbitrary axis *)
-twistPartGeneral[j_, \[Alpha]_, nVec_] := twistPartGeneral[j, \[Alpha], nVec] = Module[
-  {u = Normalize[nVec], gen},
-  gen = u . {sx[j], sy[j], sz[j]};
-  MatrixExp[-I \[Alpha] gen]
-];
-
-Floqn[j_, \[Alpha]_, k_, nVec_] := kickPart[j, k] . twistPartGeneral[j, \[Alpha], nVec];
 
 (*Coherent states*)
 generateCoherentStateCompiler[] := Module[{},
@@ -71,6 +58,26 @@ generateCoherentStateCompiler[] := Module[{},
    RuntimeAttributes -> {Listable}
    ]
 ];
+
+(* Floquet: original with twist along Sz *)
+kickPart[j_, k_] := kickPart[j, k] = MatrixExp[(-I k/(2 j)) sx2[j]];
+twistPart[j_, \[Alpha]_, \[Tau]_] := MatrixExp[(-I \[Alpha] \[Tau]) sz[j]];
+Floq[j_, \[Alpha]_, k_, \[Tau]_] := kickPart[j, k] . twistPart[j, \[Alpha], \[Tau]];
+
+(* Floquet: generalized twist along arbitrary axis *)
+twistPartGeneral[j_, \[Alpha]_, nVec_] := twistPartGeneral[j, \[Alpha], nVec] = Module[
+  {u = Normalize[nVec], gen},
+  gen = u . {sx[j], sy[j], sz[j]};
+  MatrixExp[-I \[Alpha] gen]
+];
+Floqn[j_, \[Alpha]_, k_, nVec_] := kickPart[j, k] . twistPartGeneral[j, \[Alpha], nVec];
+
+(* Breaking time reversal symmetry by kicking on y *)
+breaking[j_, \[Gamma]_]:=breaking[j, \[Gamma]]=MatrixExp[(-I \[Gamma]) sy[j]];
+Floqb[j_, \[Alpha]_,\[Tau]_,k_,\[Gamma]_] := kickPart[j, k] . twistPart[j, \[Alpha], \[Tau]] . breaking[j,\[Gamma]];
+
+(* Floquet: generalized twist along arbitrary axis and kick on y *)
+Floqbn[j_, \[Alpha]_, k_, nVec_,\[Gamma]_] := breaking[j,\[Gamma]] . kickPart[j, k] . twistPartGeneral[j, \[Alpha], nVec];
 
 
 End[];
