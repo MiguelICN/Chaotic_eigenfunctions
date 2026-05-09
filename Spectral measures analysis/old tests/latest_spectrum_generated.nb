@@ -1,0 +1,1084 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     42096,       1076]
+NotebookOptionsPosition[     39721,       1030]
+NotebookOutlinePosition[     40261,       1050]
+CellTagsIndexPosition[     40218,       1047]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["old", "Title",
+ CellChangeTimes->{{3.983609952267355*^9, 
+  3.983609953923131*^9}},ExpressionUUID->"7a860f5b-68e2-4ad7-96a5-\
+ee971d871e39"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+     "===", "===", "===", "===", "===", "===", "===", "==="}], "*)"}], 
+  RowBox[{"(*", 
+   RowBox[{"1.", " ", "SETUP", " ", "AND", " ", "PACKAGE", " ", "LOADING"}], 
+   "*)"}], 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+     "===", "===", "===", "===", "===", "===", "===", "==="}], "*)"}], 
+  RowBox[{"(*", 
+   RowBox[{"Load", " ", "your", " ", "custom", " ", "QKT", " ", "package"}], 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Get", "[", 
+     RowBox[{"FileNameJoin", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"NotebookDirectory", "[", "]"}], 
+        ",", "\"\<QKT_short.wl\>\""}], "}"}], "]"}], "]"}], ";"}], "\n", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"CRITICAL", " ", "MEMORY", " ", 
+     RowBox[{"FIX", ":", 
+      RowBox[{
+      "Prevent", " ", "Mathematica", " ", "from", " ", "storing", " ", "past",
+        " ", "loop", " ", "iterations"}]}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"$HistoryLength", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Setup", " ", "Output", " ", "Directories"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"baseDir", "=", 
+     RowBox[{"NotebookDirectory", "[", "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"evenDir", "=", 
+     RowBox[{"FileNameJoin", "[", 
+      RowBox[{"{", 
+       RowBox[{"baseDir", ",", "\"\<Results\>\"", ",", "\"\<Even\>\""}], 
+       "}"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"oddDir", "=", 
+     RowBox[{"FileNameJoin", "[", 
+      RowBox[{"{", 
+       RowBox[{"baseDir", ",", "\"\<Results\>\"", ",", "\"\<Odd\>\""}], "}"}],
+       "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"!", 
+       RowBox[{"DirectoryQ", "[", "evenDir", "]"}]}], ",", 
+      RowBox[{"CreateDirectory", "[", "evenDir", "]"}]}], "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"!", 
+       RowBox[{"DirectoryQ", "[", "oddDir", "]"}]}], ",", 
+      RowBox[{"CreateDirectory", "[", "oddDir", "]"}]}], "]"}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.9834360831539927`*^9, 3.983436090239894*^9}, {
+  3.983609040590179*^9, 3.9836090410044117`*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"d2311789-b3b7-40fd-a211-c4a0d633f482"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "PacletInstall", "fnotfound", 
+   "\"Paclet file \
+\\!\\(\\*RowBox[{\\\"\\\\\\\"/home/miguel/Desktop/MINIPC/QKT/ForScience-0.88.\
+45.paclet\\\\\\\"\\\"}]\\) not found.\"", 2, 1, 1, 26763396067605276137, 
+   "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.983510448525091*^9, 3.9836090433593903`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"22691892-e7ce-4669-8c34-e33044cde4b0"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Get", "noopen", 
+   "\"Cannot open \
+\\!\\(\\*RowBox[{\\\"\\\\\\\"ForScience`\\\\\\\"\\\"}]\\).\"", 2, 1, 2, 
+   26763396067605276137, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.983510448525091*^9, 3.983609043371009*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"3ef1e32f-9841-4f0d-b69a-6f91fa4963d4"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"LaunchKernels", "[", "20", "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.9834362184985933`*^9, 3.983436222425994*^9}},
+ CellLabel->"In[8]:=",ExpressionUUID->"1934fe5d-ef65-4ebe-b346-25fdda31455a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"Define", " ", "Parameters"}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"J", "=", "500"}], ";"}], "               ", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Adjust", " ", "to", " ", "your", " ", "specific", " ", "total", " ", 
+     "spin"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"alpha", "=", 
+     RowBox[{"N", "[", "0.84", "]"}]}], ";"}], "       ", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"N", "[", "]"}], " ", "forces", " ", "machine", " ", "precision",
+      " ", "immediately"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"kList", "=", 
+     RowBox[{"Range", "[", 
+      RowBox[{"10.0", ",", "26.0", ",", "0.2"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"nEnsemble", "=", "400"}], ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.983436098616233*^9, 3.983436103480219*^9}, {
+  3.983436254426589*^9, 3.983436256898677*^9}, {3.983436342579816*^9, 
+  3.983436342851891*^9}, {3.983510479814028*^9, 3.983510483317812*^9}, {
+  3.9835456651435966`*^9, 3.983545698448326*^9}, {3.983609071828681*^9, 
+  3.983609102365155*^9}},
+ CellLabel->"In[33]:=",ExpressionUUID->"292fea1b-2c99-4424-9f15-b45abc9e967b"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"DistributeDefinitions", "[", 
+   RowBox[{"J", ",", "alpha", ",", "kList", ",", "nEnsemble", ",", "Floq"}], 
+   "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.9834368263159847`*^9, 3.9834368601166697`*^9}},
+ CellLabel->"In[37]:=",ExpressionUUID->"0c515836-8103-4910-b1d7-a9e00abc1ab5"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+     "===", "===", "===", "===", "===", "===", "===", "==="}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+   "2.", " ", "THE", " ", "PARALLELIZED", " ", "ENSEMBLE", " ", "LOOP"}], 
+   "*)"}], "\n", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+     "===", "===", "===", "===", "===", "===", "===", "==="}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Do", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<Processing parallel ensemble for k = \>\"", ",", "k"}], 
+        "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"--", 
+          RowBox[{"-", "PARALLEL"}]}], " ", "INNER", " ", 
+         RowBox[{"LOOP", ":", 
+          RowBox[{
+           RowBox[{
+           "Distribute", " ", "the", " ", "100", " ", "spectra", " ", 
+            "across", " ", "CPU", " ", 
+            RowBox[{"cores", "--"}]}], "-"}]}]}], "*)"}], 
+       RowBox[{"results", "=", 
+        RowBox[{"ParallelTable", "[", 
+         RowBox[{"(*", 
+          RowBox[{
+           RowBox[{"Module", "[", "]"}], " ", "ensures", " ", "worker", " ", 
+           "kernels", " ", 
+           RowBox[{"don", "'"}], "t", " ", "overwrite", " ", "each", " ", 
+           RowBox[{"other", "'"}], "s", " ", "variables"}], "*)"}], 
+         RowBox[{
+          RowBox[{"Module", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+             "kEff", ",", "mat", ",", "matEven", ",", "matOdd", ",", 
+              "valsEven", ",", "valsOdd"}], "}"}], ",", 
+            RowBox[{
+             RowBox[{"kEff", "=", 
+              RowBox[{"k", "+", 
+               RowBox[{"RandomReal", "[", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"-", "0.005"}], ",", "0.005"}], "}"}], "]"}]}]}], ";",
+              "\[IndentingNewLine]", 
+             RowBox[{"mat", "=", 
+              RowBox[{"N", "[", 
+               RowBox[{"QKT`Floq", "[", 
+                RowBox[{"J", ",", "alpha", ",", "kEff"}], "]"}], "]"}]}], ";",
+              "\[IndentingNewLine]", 
+             RowBox[{"matEven", "=", 
+              RowBox[{"mat", "[", 
+               RowBox[{"[", 
+                RowBox[{
+                 RowBox[{"1", ";;", " ", ";;", "2"}], ",", 
+                 RowBox[{"1", ";;", " ", ";;", "2"}]}], "]"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"matOdd", "=", 
+              RowBox[{"mat", "[", 
+               RowBox[{"[", 
+                RowBox[{
+                 RowBox[{"2", ";;", " ", ";;", "2"}], ",", 
+                 RowBox[{"2", ";;", " ", ";;", "2"}]}], "]"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"valsEven", "=", 
+              RowBox[{"Eigenvalues", "[", "matEven", "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"valsOdd", "=", 
+              RowBox[{"Eigenvalues", "[", "matOdd", "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{"Return", " ", "a", " ", "pair", " ", "of", " ", 
+               RowBox[{"Even", "/", "Odd"}], " ", "associations", " ", "to", " ",
+                "the", " ", "main", " ", "kernel"}], "*)"}], 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"<|", 
+                RowBox[{
+                 RowBox[{"\"\<N\>\"", "->", 
+                  RowBox[{"Length", "[", "valsEven", "]"}]}], ",", 
+                 RowBox[{"\"\<Quasienergies\>\"", "->", "valsEven"}]}], 
+                "|>"}], ",", 
+               RowBox[{"<|", 
+                RowBox[{
+                 RowBox[{"\"\<N\>\"", "->", 
+                  RowBox[{"Length", "[", "valsOdd", "]"}]}], ",", 
+                 RowBox[{"\"\<Quasienergies\>\"", "->", "valsOdd"}]}], 
+                "|>"}]}], "}"}]}]}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"realization", ",", "1", ",", "nEnsemble"}], "}"}]}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Split", " ", "the", " ", "returned", " ", "parallel", " ", "results",
+          " ", "back", " ", "into", " ", "distinct", " ", "Even", " ", "and", 
+         " ", "Odd", " ", "lists"}], "*)"}], 
+       RowBox[{"ensembleEven", "=", 
+        RowBox[{"results", "[", 
+         RowBox[{"[", 
+          RowBox[{"All", ",", "1"}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"ensembleOdd", "=", 
+        RowBox[{"results", "[", 
+         RowBox[{"[", 
+          RowBox[{"All", ",", "2"}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"--", 
+           RowBox[{"-", "EXPORT"}]}], " ", "THE", " ", "FULL", " ", 
+          RowBox[{"ENSEMBLE", "--"}]}], "-"}], "*)"}], 
+       RowBox[{"Export", "[", 
+        RowBox[{
+         RowBox[{"FileNameJoin", "[", 
+          RowBox[{"{", 
+           RowBox[{"evenDir", ",", 
+            RowBox[{"\"\<spectra_k\>\"", "<>", 
+             RowBox[{"ToString", "[", "k", "]"}], "<>", "\"\<.wdx\>\""}]}], 
+           "}"}], "]"}], ",", "ensembleEven"}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Export", "[", 
+        RowBox[{
+         RowBox[{"FileNameJoin", "[", 
+          RowBox[{"{", 
+           RowBox[{"oddDir", ",", 
+            RowBox[{"\"\<spectra_k\>\"", "<>", 
+             RowBox[{"ToString", "[", "k", "]"}], "<>", "\"\<.wdx\>\""}]}], 
+           "}"}], "]"}], ",", "ensembleOdd"}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"--", 
+           RowBox[{"-", "RAM"}]}], " ", 
+          RowBox[{"CLEANUP", "--"}]}], "-"}], "*)"}], 
+       RowBox[{"Clear", "[", 
+        RowBox[{"results", ",", "ensembleEven", ",", "ensembleOdd"}], "]"}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"ClearSystemCache", "[", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<Saved parallel phase ensemble of 100 matrices for k = \>\
+\"", ",", "k"}], "]"}], ";"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"k", ",", "kList"}], "}"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<BATCH ENSEMBLE GENERATION COMPLETE!\>\"", "]"}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{3.983436879263915*^9},
+ CellLabel->"In[38]:=",ExpressionUUID->"72254d5c-426f-423b-9d72-28b06f50abd2"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Processing parallel ensemble for k = \"\>", "\[InvisibleSpace]",
+    "10.`"}],
+  SequenceForm["Processing parallel ensemble for k = ", 10.],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9836091569796457`*^9},
+ CellLabel->
+  "During evaluation of \
+In[38]:=",ExpressionUUID->"ceedb21c-aa26-4dbb-80a3-bb195ad452a0"]
+}, Open  ]],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"kList", "=", 
+   RowBox[{"Range", "[", 
+    RowBox[{"26.0", ",", "30.0", ",", "0.02"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"nEnsemble", "=", "400"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.983436098616233*^9, 3.983436103480219*^9}, {
+  3.983436254426589*^9, 3.983436256898677*^9}, {3.983436342579816*^9, 
+  3.983436342851891*^9}, {3.983510479814028*^9, 3.983510483317812*^9}, {
+  3.9835456651435966`*^9, 3.983545698448326*^9}, {3.983609071828681*^9, 
+  3.9836091408617563`*^9}},
+ CellLabel->"In[30]:=",ExpressionUUID->"746fb0d5-0a97-4ed7-818c-7cbbbe91fe23"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"DistributeDefinitions", "[", 
+   RowBox[{"J", ",", "alpha", ",", "kList", ",", "nEnsemble", ",", "Floq"}], 
+   "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.9834368263159847`*^9, 3.9834368601166697`*^9}},
+ CellLabel->"In[13]:=",ExpressionUUID->"693f15ce-adc9-4d75-a018-555056e3ef11"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+     "===", "===", "===", "===", "===", "===", "===", "==="}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+   "2.", " ", "THE", " ", "PARALLELIZED", " ", "ENSEMBLE", " ", "LOOP"}], 
+   "*)"}], "\n", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+     "===", "===", "===", "===", "===", "===", "===", "==="}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Do", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<Processing parallel ensemble for k = \>\"", ",", "k"}], 
+        "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"--", 
+          RowBox[{"-", "PARALLEL"}]}], " ", "INNER", " ", 
+         RowBox[{"LOOP", ":", 
+          RowBox[{
+           RowBox[{
+           "Distribute", " ", "the", " ", "100", " ", "spectra", " ", 
+            "across", " ", "CPU", " ", 
+            RowBox[{"cores", "--"}]}], "-"}]}]}], "*)"}], 
+       RowBox[{"results", "=", 
+        RowBox[{"ParallelTable", "[", 
+         RowBox[{"(*", 
+          RowBox[{
+           RowBox[{"Module", "[", "]"}], " ", "ensures", " ", "worker", " ", 
+           "kernels", " ", 
+           RowBox[{"don", "'"}], "t", " ", "overwrite", " ", "each", " ", 
+           RowBox[{"other", "'"}], "s", " ", "variables"}], "*)"}], 
+         RowBox[{
+          RowBox[{"Module", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+             "kEff", ",", "mat", ",", "matEven", ",", "matOdd", ",", 
+              "valsEven", ",", "valsOdd"}], "}"}], ",", 
+            RowBox[{
+             RowBox[{"kEff", "=", 
+              RowBox[{"k", "+", 
+               RowBox[{"RandomReal", "[", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"-", "0.005"}], ",", "0.005"}], "}"}], "]"}]}]}], ";",
+              "\[IndentingNewLine]", 
+             RowBox[{"mat", "=", 
+              RowBox[{"N", "[", 
+               RowBox[{"QKT`Floq", "[", 
+                RowBox[{"J", ",", "alpha", ",", "kEff"}], "]"}], "]"}]}], ";",
+              "\[IndentingNewLine]", 
+             RowBox[{"matEven", "=", 
+              RowBox[{"mat", "[", 
+               RowBox[{"[", 
+                RowBox[{
+                 RowBox[{"1", ";;", " ", ";;", "2"}], ",", 
+                 RowBox[{"1", ";;", " ", ";;", "2"}]}], "]"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"matOdd", "=", 
+              RowBox[{"mat", "[", 
+               RowBox[{"[", 
+                RowBox[{
+                 RowBox[{"2", ";;", " ", ";;", "2"}], ",", 
+                 RowBox[{"2", ";;", " ", ";;", "2"}]}], "]"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"valsEven", "=", 
+              RowBox[{"Eigenvalues", "[", "matEven", "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"valsOdd", "=", 
+              RowBox[{"Eigenvalues", "[", "matOdd", "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{"Return", " ", "a", " ", "pair", " ", "of", " ", 
+               RowBox[{"Even", "/", "Odd"}], " ", "associations", " ", "to", " ",
+                "the", " ", "main", " ", "kernel"}], "*)"}], 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"<|", 
+                RowBox[{
+                 RowBox[{"\"\<N\>\"", "->", 
+                  RowBox[{"Length", "[", "valsEven", "]"}]}], ",", 
+                 RowBox[{"\"\<Quasienergies\>\"", "->", "valsEven"}]}], 
+                "|>"}], ",", 
+               RowBox[{"<|", 
+                RowBox[{
+                 RowBox[{"\"\<N\>\"", "->", 
+                  RowBox[{"Length", "[", "valsOdd", "]"}]}], ",", 
+                 RowBox[{"\"\<Quasienergies\>\"", "->", "valsOdd"}]}], 
+                "|>"}]}], "}"}]}]}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"realization", ",", "1", ",", "nEnsemble"}], "}"}]}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Split", " ", "the", " ", "returned", " ", "parallel", " ", "results",
+          " ", "back", " ", "into", " ", "distinct", " ", "Even", " ", "and", 
+         " ", "Odd", " ", "lists"}], "*)"}], 
+       RowBox[{"ensembleEven", "=", 
+        RowBox[{"results", "[", 
+         RowBox[{"[", 
+          RowBox[{"All", ",", "1"}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"ensembleOdd", "=", 
+        RowBox[{"results", "[", 
+         RowBox[{"[", 
+          RowBox[{"All", ",", "2"}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"--", 
+           RowBox[{"-", "EXPORT"}]}], " ", "THE", " ", "FULL", " ", 
+          RowBox[{"ENSEMBLE", "--"}]}], "-"}], "*)"}], 
+       RowBox[{"Export", "[", 
+        RowBox[{
+         RowBox[{"FileNameJoin", "[", 
+          RowBox[{"{", 
+           RowBox[{"evenDir", ",", 
+            RowBox[{"\"\<spectra_k\>\"", "<>", 
+             RowBox[{"ToString", "[", "k", "]"}], "<>", "\"\<.wdx\>\""}]}], 
+           "}"}], "]"}], ",", "ensembleEven"}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Export", "[", 
+        RowBox[{
+         RowBox[{"FileNameJoin", "[", 
+          RowBox[{"{", 
+           RowBox[{"oddDir", ",", 
+            RowBox[{"\"\<spectra_k\>\"", "<>", 
+             RowBox[{"ToString", "[", "k", "]"}], "<>", "\"\<.wdx\>\""}]}], 
+           "}"}], "]"}], ",", "ensembleOdd"}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"--", 
+           RowBox[{"-", "RAM"}]}], " ", 
+          RowBox[{"CLEANUP", "--"}]}], "-"}], "*)"}], 
+       RowBox[{"Clear", "[", 
+        RowBox[{"results", ",", "ensembleEven", ",", "ensembleOdd"}], "]"}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"ClearSystemCache", "[", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<Saved parallel phase ensemble of 100 matrices for k = \>\
+\"", ",", "k"}], "]"}], ";"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"k", ",", "kList"}], "}"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<BATCH ENSEMBLE GENERATION COMPLETE!\>\"", "]"}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{3.983436879263915*^9},
+ CellLabel->"In[42]:=",ExpressionUUID->"63d19d88-b676-4cd8-a57b-ab7af3c9f02a"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["New", "Title",
+ CellChangeTimes->{{3.983609961702573*^9, 
+  3.983609962211747*^9}},ExpressionUUID->"693fa705-20b9-417b-8217-\
+2aca1a91be35"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+     "===", "===", "===", "===", "===", "===", "===", "==="}], "*)"}], 
+  RowBox[{"(*", 
+   RowBox[{"1.", " ", "SETUP", " ", "AND", " ", "PACKAGE", " ", "LOADING"}], 
+   "*)"}], 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+     "===", "===", "===", "===", "===", "===", "===", "==="}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"SetDirectory", "[", 
+     RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Load", " ", "your", " ", "custom", " ", "QKT", " ", "package", " ", 
+     RowBox[{"(", 
+      RowBox[{
+      "Make", " ", "sure", " ", "the", " ", "name", " ", "matches", " ", 
+       "your", " ", "file"}], ")"}]}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"Get", "[", 
+     RowBox[{"FileNameJoin", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"NotebookDirectory", "[", "]"}], ",", "\"\<QKT_full.wl\>\""}],
+        "}"}], "]"}], "]"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"CRITICAL", " ", "MEMORY", " ", 
+     RowBox[{"FIX", ":", 
+      RowBox[{
+      "Prevent", " ", "Mathematica", " ", "from", " ", "storing", " ", "past",
+        " ", "loop", " ", "iterations"}]}]}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"$HistoryLength", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Setup", " ", "Output", " ", "Directories"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"baseDir", "=", 
+     RowBox[{"NotebookDirectory", "[", "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"evenDir", "=", 
+     RowBox[{"FileNameJoin", "[", 
+      RowBox[{"{", 
+       RowBox[{"baseDir", ",", "\"\<Results\>\"", ",", "\"\<Even\>\""}], 
+       "}"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"oddDir", "=", 
+     RowBox[{"FileNameJoin", "[", 
+      RowBox[{"{", 
+       RowBox[{"baseDir", ",", "\"\<Results\>\"", ",", "\"\<Odd\>\""}], "}"}],
+       "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"!", 
+       RowBox[{"DirectoryQ", "[", "evenDir", "]"}]}], ",", 
+      RowBox[{"CreateDirectory", "[", "evenDir", "]"}]}], "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"!", 
+       RowBox[{"DirectoryQ", "[", "oddDir", "]"}]}], ",", 
+      RowBox[{"CreateDirectory", "[", "oddDir", "]"}]}], "]"}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{
+  3.9838581526619205`*^9},ExpressionUUID->"df256ca7-1d7d-49f7-8d4f-\
+fa4c4ed6e6f9"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "PacletInstall", "fnotfound", 
+   "\"Paclet file \
+\\!\\(\\*RowBox[{\\\"\\\\\\\"/home/miguel/Desktop/MINIPC/QKT/ForScience-0.88.\
+45.paclet\\\\\\\"\\\"}]\\) not found.\"", 2, 2, 1, 26763405226898175977, 
+   "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.983610070412778*^9, 3.98361024943672*^9, 
+  3.983610416942848*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"0ba1d202-c117-4a3e-a1d7-855f6e2c8e32"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Get", "noopen", 
+   "\"Cannot open \
+\\!\\(\\*RowBox[{\\\"\\\\\\\"ForScience`\\\\\\\"\\\"}]\\).\"", 2, 2, 2, 
+   26763405226898175977, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.983610070412778*^9, 3.98361024943672*^9, 
+  3.98361041695288*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"a16f4f78-187d-45ac-87fc-2145d4e5b3fc"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"LaunchKernels", "[", "20", "]"}], ";"}]], "Input",
+ CellLabel->"In[9]:=",ExpressionUUID->"061a2d27-16ce-4ee5-a614-6320c3a45cb4"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+     "===", "===", "===", "===", "===", "===", "===", "==="}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"2.", " ", "DEFINE", " ", "PARAMETERS"}], "&"}], " ", 
+    "DISTRIBUTE", " ", "TO", " ", "WORKERS"}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+     "===", "===", "===", "===", "===", "===", "===", "==="}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"J", "=", "500"}], ";"}], "               ", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Adjust", " ", "to", " ", "your", " ", "specific", " ", "total", " ", 
+     "spin"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"alpha", "=", 
+     RowBox[{"N", "[", "0.84", "]"}]}], ";"}], "       ", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"N", "[", "]"}], " ", "forces", " ", "machine", " ", "precision",
+      " ", "immediately"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"nEnsemble", "=", "400"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Pre", "-", 
+      RowBox[{
+      "calculate", " ", "the", " ", "exact", " ", "parity", " ", "indices", " ",
+        "for", " ", "J"}]}], "=", 
+     RowBox[{
+     "500", " ", "safely", " ", "using", " ", "the", " ", "package"}]}], 
+    "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"idxParity", "=", 
+     RowBox[{"QKT`ParitySectorIndices", "[", "J", "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"idxEven", "=", 
+     RowBox[{"idxParity", "[", "\"\<Even\>\"", "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"idxOdd", "=", 
+     RowBox[{"idxParity", "[", "\"\<Odd\>\"", "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Distribute", " ", "the", " ", "package", " ", "variables", " ", "and", " ",
+      "indices", " ", "to", " ", "all", " ", "20", " ", "kernels"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"DistributeDefinitions", "[", 
+     RowBox[{
+     "J", ",", "alpha", ",", "nEnsemble", ",", "idxEven", ",", "idxOdd", ",", 
+      "Floqsym"}], "]"}], ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.983610202048326*^9, 3.983610202263935*^9}, {
+  3.983610252905546*^9, 3.983610255737406*^9}, {3.9836103626351*^9, 
+  3.9836103669548903`*^9}},
+ CellLabel->"In[10]:=",ExpressionUUID->"d058cadd-9a88-4b66-a17e-0f97b9aff255"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+     "===", "===", "===", "===", "===", "===", "===", "==="}], "*)"}], "\n", 
+  RowBox[{"(*", 
+   RowBox[{
+   "3.", " ", "THE", " ", "PARALLELIZED", " ", "ENSEMBLE", " ", "LOOP", " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"Part", " ", "1"}], ":", 
+      RowBox[{"Coarse", " ", "Grid"}]}], ")"}]}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+     "===", "===", "===", "===", "===", "===", "===", "==="}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"kList1", "=", 
+     RowBox[{"Range", "[", 
+      RowBox[{"10.0", ",", "26.0", ",", "0.2"}], "]"}]}], ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Do", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<Processing parallel ensemble for k = \>\"", ",", "k"}], 
+        "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"--", 
+           RowBox[{"-", "PARALLEL"}]}], " ", "INNER", " ", 
+          RowBox[{"LOOP", "--"}]}], "-"}], "*)"}], 
+       RowBox[{"results", "=", 
+        RowBox[{"ParallelTable", "[", 
+         RowBox[{
+          RowBox[{"Module", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+             "kEff", ",", "mat", ",", "matEven", ",", "matOdd", ",", 
+              "valsEven", ",", "valsOdd"}], "}"}], ",", 
+            RowBox[{
+             RowBox[{"kEff", "=", 
+              RowBox[{"k", "+", 
+               RowBox[{"RandomReal", "[", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"-", "0.005"}], ",", "0.005"}], "}"}], "]"}]}]}], ";",
+              "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{
+               "We", " ", "use", " ", "Floqsym", " ", "here", " ", "as", " ", 
+                "discussed"}], ",", 
+               RowBox[{
+               "or", " ", "you", " ", "can", " ", "use", " ", "Floq"}]}], 
+              "*)"}], 
+             RowBox[{"mat", "=", 
+              RowBox[{"N", "[", 
+               RowBox[{"QKT`Floqsym", "[", 
+                RowBox[{"J", ",", "alpha", ",", "kEff"}], "]"}], "]"}]}], ";",
+              "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{
+               "Use", " ", "the", " ", "robust", " ", "parity", " ", 
+                "indices", " ", "instead", " ", "of", " ", "hardcoded", " ", 
+                "1"}], ";;", ";;", "2"}], "*)"}], 
+             RowBox[{"matEven", "=", 
+              RowBox[{"mat", "[", 
+               RowBox[{"[", 
+                RowBox[{"idxEven", ",", "idxEven"}], "]"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"matOdd", "=", 
+              RowBox[{"mat", "[", 
+               RowBox[{"[", 
+                RowBox[{"idxOdd", ",", "idxOdd"}], "]"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"valsEven", "=", 
+              RowBox[{"Eigenvalues", "[", "matEven", "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"valsOdd", "=", 
+              RowBox[{"Eigenvalues", "[", "matOdd", "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{"Return", " ", "a", " ", "pair", " ", "of", " ", 
+               RowBox[{"Even", "/", "Odd"}], " ", "associations", " ", "to", " ",
+                "the", " ", "main", " ", "kernel"}], "*)"}], 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"<|", 
+                RowBox[{
+                 RowBox[{"\"\<N\>\"", "->", 
+                  RowBox[{"Length", "[", "valsEven", "]"}]}], ",", 
+                 RowBox[{"\"\<Quasienergies\>\"", "->", "valsEven"}]}], 
+                "|>"}], ",", 
+               RowBox[{"<|", 
+                RowBox[{
+                 RowBox[{"\"\<N\>\"", "->", 
+                  RowBox[{"Length", "[", "valsOdd", "]"}]}], ",", 
+                 RowBox[{"\"\<Quasienergies\>\"", "->", "valsOdd"}]}], 
+                "|>"}]}], "}"}]}]}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"realization", ",", "1", ",", "nEnsemble"}], "}"}]}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Split", " ", "the", " ", "returned", " ", "parallel", " ", "results",
+          " ", "back", " ", "into", " ", "distinct", " ", "Even", " ", "and", 
+         " ", "Odd", " ", "lists"}], "*)"}], 
+       RowBox[{"ensembleEven", "=", 
+        RowBox[{"results", "[", 
+         RowBox[{"[", 
+          RowBox[{"All", ",", "1"}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"ensembleOdd", "=", 
+        RowBox[{"results", "[", 
+         RowBox[{"[", 
+          RowBox[{"All", ",", "2"}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"--", 
+           RowBox[{"-", "EXPORT"}]}], " ", "THE", " ", "FULL", " ", 
+          RowBox[{"ENSEMBLE", "--"}]}], "-"}], "*)"}], 
+       RowBox[{"Export", "[", 
+        RowBox[{
+         RowBox[{"FileNameJoin", "[", 
+          RowBox[{"{", 
+           RowBox[{"evenDir", ",", 
+            RowBox[{"\"\<spectra_k\>\"", "<>", 
+             RowBox[{"ToString", "[", "k", "]"}], "<>", "\"\<.wdx\>\""}]}], 
+           "}"}], "]"}], ",", "ensembleEven"}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Export", "[", 
+        RowBox[{
+         RowBox[{"FileNameJoin", "[", 
+          RowBox[{"{", 
+           RowBox[{"oddDir", ",", 
+            RowBox[{"\"\<spectra_k\>\"", "<>", 
+             RowBox[{"ToString", "[", "k", "]"}], "<>", "\"\<.wdx\>\""}]}], 
+           "}"}], "]"}], ",", "ensembleOdd"}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"--", 
+           RowBox[{"-", "RAM"}]}], " ", 
+          RowBox[{"CLEANUP", "--"}]}], "-"}], "*)"}], 
+       RowBox[{"Clear", "[", 
+        RowBox[{"results", ",", "ensembleEven", ",", "ensembleOdd"}], "]"}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"ClearSystemCache", "[", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<Saved parallel phase ensemble of \>\"", ",", "nEnsemble",
+          ",", "\"\< matrices for k = \>\"", ",", "k"}], "]"}], ";"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"k", ",", "kList1"}], "}"}]}], "]"}], ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<PART 1 BATCH ENSEMBLE GENERATION COMPLETE!\>\"", "]"}],
+     ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+      "===", "===", "===", "===", "===", "===", "===", "==="}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "4.", " ", "THE", " ", "PARALLELIZED", " ", "ENSEMBLE", " ", "LOOP", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"Part", " ", "2"}], ":", 
+       RowBox[{"Fine", " ", "Grid"}]}], ")"}]}], "*)"}], "\n", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+      "===", "===", "===", "===", "===", "===", "===", "==="}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"kList2", "=", 
+     RowBox[{"Range", "[", 
+      RowBox[{"26.0", ",", "30.0", ",", "0.02"}], "]"}]}], ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Do", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<Processing parallel ensemble for k = \>\"", ",", 
+         RowBox[{"NumberForm", "[", 
+          RowBox[{"k", ",", 
+           RowBox[{"{", 
+            RowBox[{"4", ",", "2"}], "}"}]}], "]"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"results", "=", 
+        RowBox[{"ParallelTable", "[", 
+         RowBox[{
+          RowBox[{"Module", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+             "kEff", ",", "mat", ",", "matEven", ",", "matOdd", ",", 
+              "valsEven", ",", "valsOdd"}], "}"}], ",", 
+            RowBox[{
+             RowBox[{"kEff", "=", 
+              RowBox[{"k", "+", 
+               RowBox[{"RandomReal", "[", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"-", "0.005"}], ",", "0.005"}], "}"}], "]"}]}]}], ";",
+              "\[IndentingNewLine]", 
+             RowBox[{"mat", "=", 
+              RowBox[{"N", "[", 
+               RowBox[{"QKT`Floqsym", "[", 
+                RowBox[{"J", ",", "alpha", ",", "kEff"}], "]"}], "]"}]}], ";",
+              "\[IndentingNewLine]", 
+             RowBox[{"matEven", "=", 
+              RowBox[{"mat", "[", 
+               RowBox[{"[", 
+                RowBox[{"idxEven", ",", "idxEven"}], "]"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"matOdd", "=", 
+              RowBox[{"mat", "[", 
+               RowBox[{"[", 
+                RowBox[{"idxOdd", ",", "idxOdd"}], "]"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"valsEven", "=", 
+              RowBox[{"Eigenvalues", "[", "matEven", "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"valsOdd", "=", 
+              RowBox[{"Eigenvalues", "[", "matOdd", "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"<|", 
+                RowBox[{
+                 RowBox[{"\"\<N\>\"", "->", 
+                  RowBox[{"Length", "[", "valsEven", "]"}]}], ",", 
+                 RowBox[{"\"\<Quasienergies\>\"", "->", "valsEven"}]}], 
+                "|>"}], ",", 
+               RowBox[{"<|", 
+                RowBox[{
+                 RowBox[{"\"\<N\>\"", "->", 
+                  RowBox[{"Length", "[", "valsOdd", "]"}]}], ",", 
+                 RowBox[{"\"\<Quasienergies\>\"", "->", "valsOdd"}]}], 
+                "|>"}]}], "}"}]}]}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"realization", ",", "1", ",", "nEnsemble"}], "}"}]}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"ensembleEven", "=", 
+        RowBox[{"results", "[", 
+         RowBox[{"[", 
+          RowBox[{"All", ",", "1"}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"ensembleOdd", "=", 
+        RowBox[{"results", "[", 
+         RowBox[{"[", 
+          RowBox[{"All", ",", "2"}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Export", "[", 
+        RowBox[{
+         RowBox[{"FileNameJoin", "[", 
+          RowBox[{"{", 
+           RowBox[{"evenDir", ",", 
+            RowBox[{"\"\<spectra_k\>\"", "<>", 
+             RowBox[{"ToString", "[", 
+              RowBox[{"NumberForm", "[", 
+               RowBox[{"k", ",", 
+                RowBox[{"{", 
+                 RowBox[{"4", ",", "2"}], "}"}]}], "]"}], "]"}], 
+             "<>", "\"\<.wdx\>\""}]}], "}"}], "]"}], ",", "ensembleEven"}], 
+        "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Export", "[", 
+        RowBox[{
+         RowBox[{"FileNameJoin", "[", 
+          RowBox[{"{", 
+           RowBox[{"oddDir", ",", 
+            RowBox[{"\"\<spectra_k\>\"", "<>", 
+             RowBox[{"ToString", "[", 
+              RowBox[{"NumberForm", "[", 
+               RowBox[{"k", ",", 
+                RowBox[{"{", 
+                 RowBox[{"4", ",", "2"}], "}"}]}], "]"}], "]"}], 
+             "<>", "\"\<.wdx\>\""}]}], "}"}], "]"}], ",", "ensembleOdd"}], 
+        "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Clear", "[", 
+        RowBox[{"results", ",", "ensembleEven", ",", "ensembleOdd"}], "]"}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"ClearSystemCache", "[", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<Saved parallel phase ensemble of \>\"", ",", "nEnsemble",
+          ",", "\"\< matrices for k = \>\"", ",", 
+         RowBox[{"NumberForm", "[", 
+          RowBox[{"k", ",", 
+           RowBox[{"{", 
+            RowBox[{"4", ",", "2"}], "}"}]}], "]"}]}], "]"}], ";"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"k", ",", "kList2"}], "}"}]}], "]"}], ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<PART 2 BATCH ENSEMBLE GENERATION COMPLETE!\>\"", "]"}],
+     ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.983610058425337*^9, 3.983610087910967*^9}},
+ CellLabel->"In[17]:=",ExpressionUUID->"0d728e22-6835-40e4-b97b-5c0d859e4561"]
+}, Open  ]]
+},
+WindowSize->{1645.7142857142856`, 858},
+WindowMargins->{{
+  Automatic, -5.14285714285711}, {-5.14285714285711, Automatic}},
+TaggingRules-><|"TryRealOnly" -> False|>,
+CellContext->Notebook,
+Magnification:>1. Inherited,
+FrontEndVersion->"14.3 for Microsoft Windows (64-bit) (July 8, 2025)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"fce558c1-2235-4715-8ef5-a88835881479"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 146, 3, 96, "Title",ExpressionUUID->"7a860f5b-68e2-4ad7-96a5-ee971d871e39"],
+Cell[CellGroupData[{
+Cell[751, 29, 2495, 65, 218, "Input",ExpressionUUID->"d2311789-b3b7-40fd-a211-c4a0d633f482"],
+Cell[3249, 96, 458, 11, 26, "Message",ExpressionUUID->"22691892-e7ce-4669-8c34-e33044cde4b0"],
+Cell[3710, 109, 385, 10, 26, "Message",ExpressionUUID->"3ef1e32f-9841-4f0d-b69a-6f91fa4963d4"]
+}, Open  ]],
+Cell[4110, 122, 231, 4, 28, "Input",ExpressionUUID->"1934fe5d-ef65-4ebe-b346-25fdda31455a"],
+Cell[4344, 128, 1199, 29, 104, "Input",ExpressionUUID->"292fea1b-2c99-4424-9f15-b45abc9e967b"],
+Cell[5546, 159, 318, 6, 28, "Input",ExpressionUUID->"0c515836-8103-4910-b1d7-a9e00abc1ab5"],
+Cell[CellGroupData[{
+Cell[5889, 169, 6632, 163, 408, "Input",ExpressionUUID->"72254d5c-426f-423b-9d72-28b06f50abd2"],
+Cell[12524, 334, 368, 9, 22, "Print",ExpressionUUID->"ceedb21c-aa26-4dbb-80a3-bb195ad452a0"]
+}, Open  ]],
+Cell[12907, 346, 619, 12, 47, "Input",ExpressionUUID->"746fb0d5-0a97-4ed7-818c-7cbbbe91fe23"],
+Cell[13529, 360, 318, 6, 28, "Input",ExpressionUUID->"693f15ce-adc9-4d75-a018-555056e3ef11"],
+Cell[13850, 368, 6632, 163, 408, "Input",ExpressionUUID->"63d19d88-b676-4cd8-a57b-ab7af3c9f02a"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[20519, 536, 146, 3, 70, "Title",ExpressionUUID->"693fa705-20b9-417b-8217-2aca1a91be35"],
+Cell[CellGroupData[{
+Cell[20690, 543, 2725, 74, 294, "Input",ExpressionUUID->"df256ca7-1d7d-49f7-8d4f-fa4c4ed6e6f9"],
+Cell[23418, 619, 480, 12, 26, "Message",ExpressionUUID->"0ba1d202-c117-4a3e-a1d7-855f6e2c8e32"],
+Cell[23901, 633, 408, 11, 26, "Message",ExpressionUUID->"a16f4f78-187d-45ac-87fc-2145d4e5b3fc"]
+}, Open  ]],
+Cell[24324, 647, 163, 3, 28, "Input",ExpressionUUID->"061a2d27-16ce-4ee5-a614-6320c3a45cb4"],
+Cell[24490, 652, 2522, 65, 275, "Input",ExpressionUUID->"d058cadd-9a88-4b66-a17e-0f97b9aff255"],
+Cell[27015, 719, 12690, 308, 865, "Input",ExpressionUUID->"0d728e22-6835-40e4-b97b-5c0d859e4561"]
+}, Open  ]]
+}
+]
+*)
+

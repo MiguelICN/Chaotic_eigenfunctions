@@ -1,0 +1,1487 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[     64126,       1479]
+NotebookOptionsPosition[     57512,       1346]
+NotebookOutlinePosition[     63368,       1466]
+CellTagsIndexPosition[     63325,       1463]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Setup", "Chapter",
+ CellChangeTimes->{{3.981777776605606*^9, 
+  3.9817777774830265`*^9}},ExpressionUUID->"df35d458-8f23-5948-9519-\
+fecbae577a78"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"===", " ", "SETUP", " ", "==="}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"baseDir", " ", "=", " ", 
+     RowBox[{"NotebookDirectory", "[", "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Get", "[", 
+     RowBox[{"FileNameJoin", "[", 
+      RowBox[{"{", 
+       RowBox[{"baseDir", ",", " ", "\"\<QKT_full.wl\>\""}], "}"}], "]"}], 
+     "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"LaunchKernels", "[", "]"}], ";"}]}]}]], "Input",
+ CellLabel->"In[1]:=",ExpressionUUID->"4a2075c2-3cab-5e4e-915a-781d98e9b1f9"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Global parameters", "Chapter",
+ CellChangeTimes->{{3.981777823730198*^9, 
+  3.981777826721697*^9}},ExpressionUUID->"38de49bc-c767-d442-a6ba-\
+414d8c5d8d69"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"===", " ", "PARAMETERS", " ", "==="}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"jValues", "   ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{"100", ",", " ", "150"}], "}"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"alpha", "     ", "=", " ", "0.84"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"kValues", "   ", "=", " ", 
+     RowBox[{"Range", "[", 
+      RowBox[{"10.", ",", " ", "11.", ",", " ", "0.5"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"nQKT", "      ", "=", " ", "10"}], ";"}], "           ", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "QKT", " ", "ensemble", " ", "size", " ", "per", " ", "k", " ", "value"}],
+     " ", "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"delta", "     ", "=", " ", "0.001"}], ";"}], "          ", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{"k", " ", "perturbation", " ", "half"}], "-", "width"}], " ", 
+    "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"nCOE", "      ", "=", " ", "10"}], ";"}], "           ", 
+   RowBox[{"(*", " ", 
+    RowBox[{"COE", " ", "ensemble", " ", "size", " ", "per", " ", "J"}], " ", 
+    "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"Lmax", "      ", "=", " ", "25"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"lDomain", "   ", "=", " ", 
+     RowBox[{"Range", "[", 
+      RowBox[{"0.5", ",", " ", "Lmax", ",", " ", "0.1"}], "]"}]}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.981777830399397*^9, 3.9817778564905415`*^9}, {
+  3.981778279666815*^9, 3.9817782840464993`*^9}},
+ CellLabel->"In[42]:=",ExpressionUUID->"bf4bf41b-1b84-1e4e-b037-47d0f96cd791"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Helpers", "Chapter",
+ CellChangeTimes->{{3.981777871640127*^9, 
+  3.981777873145916*^9}},ExpressionUUID->"c4883b4e-7fd1-9940-be42-\
+482bcb1cb562"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"===", " ", "HELPERS", " ", "==="}], " ", "*)"}], "\n", "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"kLabel", "[", "k_", "]"}], " ", ":=", " ", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"s", " ", "=", " ", 
+         RowBox[{"ToString", "[", 
+          RowBox[{"N", "[", "k", "]"}], "]"}]}], "}"}], ",", "\n", "  ", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"StringEndsQ", "[", 
+          RowBox[{"s", ",", " ", "\"\<.\>\""}], "]"}], ",", " ", 
+         RowBox[{"s", " ", "<>", " ", "\"\<0\>\""}], ",", " ", "s"}], "]"}]}],
+       "]"}]}], ";"}], "\n", "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"jLabel", "[", "j_", "]"}], " ", ":=", " ", 
+     RowBox[{"\"\<J\>\"", " ", "<>", " ", 
+      RowBox[{"StringPadLeft", "[", 
+       RowBox[{
+        RowBox[{"ToString", "[", "j", "]"}], ",", " ", "4", ",", 
+        " ", "\"\<0\>\""}], "]"}]}]}], ";"}], "\n", "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"EnsureDir", "[", "dir_", "]"}], " ", ":=", " ", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"!", 
+        RowBox[{"DirectoryQ", "[", "dir", "]"}]}], ",", "\n", "  ", 
+       RowBox[{"CreateDirectory", "[", 
+        RowBox[{"dir", ",", " ", 
+         RowBox[{"CreateIntermediateDirectories", " ", "->", " ", "True"}]}], 
+        "]"}]}], "]"}]}], ";"}], "\n", "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"PlotTitle", "[", 
+      RowBox[{"sector_", ",", " ", "j_", ",", " ", "k_"}], "]"}], " ", ":=", 
+     " ", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"k", " ", "==", " ", "0"}], ",", "\n", "  ", 
+       RowBox[{
+       "sector", " ", "<>", " ", "\"\< reference (J=\>\"", " ", "<>", " ", 
+        RowBox[{"ToString", "[", "j", "]"}], " ", "<>", " ", "\"\<)\>\""}], ",",
+        "\n", "  ", 
+       RowBox[{"sector", " ", "<>", " ", "\"\<: J=\>\"", " ", "<>", " ", 
+        RowBox[{"ToString", "[", "j", "]"}], " ", "<>", " ", "\"\<, k=\>\"", 
+        " ", "<>", " ", 
+        RowBox[{"kLabel", "[", "k", "]"}]}]}], "]"}]}], ";"}], "\n", "\n", 
+   RowBox[{
+    RowBox[{"$pOpts", " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"ImageSize", " ", "->", " ", "1000"}], ",", " ", 
+       RowBox[{"Frame", " ", "->", " ", "True"}], ",", "\n", "  ", 
+       RowBox[{"FrameStyle", " ", "->", " ", 
+        RowBox[{"Directive", "[", 
+         RowBox[{"30", ",", " ", "Black"}], "]"}]}], ",", "\n", "  ", 
+       RowBox[{"LabelStyle", " ", "->", " ", 
+        RowBox[{"Directive", "[", 
+         RowBox[{"30", ",", " ", "Black"}], "]"}]}]}], "}"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"===", " ", 
+     RowBox[{"PLOT", " ", "FUNCTIONS"}], " ", "==="}], " ", "*)"}], "\n", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{
+     "All", " ", "QKT", " ", "data", " ", "now", " ", "uses", " ", "ensemble",
+       " ", 
+      RowBox[{"keys", ":", " ", "Sigma2TheorMean"}]}], ",", " ", 
+     "SETheorMean"}], " ", "*)"}], "\n", "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"MakeSigma2Plot", "[", 
+      RowBox[{
+      "s2Even_", ",", " ", "s2Odd_", ",", " ", "s2COE_", ",", " ", "j_", ",", 
+       " ", "k_", ",", " ", "dimE_", ",", " ", "dimO_"}], "]"}], " ", ":=", 
+     "\n", "  ", 
+     RowBox[{"Legended", "[", "\n", "    ", 
+      RowBox[{
+       RowBox[{"Show", "[", "\n", "      ", 
+        RowBox[{"(*", " ", 
+         RowBox[{"COE", " ", "error", " ", "band"}], " ", "*)"}], "\n", 
+        "      ", 
+        RowBox[{
+         RowBox[{"ListLinePlot", "[", "\n", "        ", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Transpose", "[", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"s2COE", "[", "\"\<LValues\>\"", "]"}], ",", "\n", 
+                "          ", 
+                RowBox[{
+                 RowBox[{"s2COE", "[", "\"\<Sigma2TheorMean\>\"", "]"}], " ", 
+                 "+", " ", 
+                 RowBox[{"s2COE", "[", "\"\<SETheorMean\>\"", "]"}]}]}], 
+               "}"}], "]"}], ",", "\n", "         ", 
+             RowBox[{"Transpose", "[", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"s2COE", "[", "\"\<LValues\>\"", "]"}], ",", "\n", 
+                "          ", 
+                RowBox[{
+                 RowBox[{"s2COE", "[", "\"\<Sigma2TheorMean\>\"", "]"}], " ", 
+                 "-", " ", 
+                 RowBox[{"s2COE", "[", "\"\<SETheorMean\>\"", "]"}]}]}], 
+               "}"}], "]"}]}], "}"}], ",", "\n", "        ", 
+           RowBox[{"PlotStyle", " ", "->", " ", "None"}], ",", " ", 
+           RowBox[{"Filling", " ", "->", " ", 
+            RowBox[{"{", 
+             RowBox[{"1", " ", "->", " ", 
+              RowBox[{"{", "2", "}"}]}], "}"}]}], ",", "\n", "        ", 
+           RowBox[{"FillingStyle", " ", "->", " ", 
+            RowBox[{"Directive", "[", 
+             RowBox[{
+              RowBox[{"Opacity", "[", "0.15", "]"}], ",", " ", "Red"}], 
+             "]"}]}]}], "]"}], ",", "\n", "      ", 
+         RowBox[{"ListLinePlot", "[", "\n", "        ", 
+          RowBox[{
+           RowBox[{"Transpose", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"s2COE", "[", "\"\<LValues\>\"", "]"}], ",", " ", 
+              RowBox[{"s2COE", "[", "\"\<Sigma2TheorMean\>\"", "]"}]}], "}"}],
+             "]"}], ",", "\n", "        ", 
+           RowBox[{"PlotStyle", " ", "->", " ", 
+            RowBox[{"{", 
+             RowBox[{"Red", ",", " ", "Thick"}], "}"}]}]}], "]"}], ",", "\n", 
+         "      ", 
+         RowBox[{"(*", " ", 
+          RowBox[{"Even", " ", "error", " ", "band"}], " ", "*)"}], "\n", 
+         "      ", 
+         RowBox[{"ListLinePlot", "[", "\n", "        ", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Transpose", "[", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"s2Even", "[", "\"\<LValues\>\"", "]"}], ",", "\n", 
+                "          ", 
+                RowBox[{
+                 RowBox[{"s2Even", "[", "\"\<Sigma2TheorMean\>\"", "]"}], " ",
+                  "+", " ", 
+                 RowBox[{"s2Even", "[", "\"\<SETheorMean\>\"", "]"}]}]}], 
+               "}"}], "]"}], ",", "\n", "         ", 
+             RowBox[{"Transpose", "[", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"s2Even", "[", "\"\<LValues\>\"", "]"}], ",", "\n", 
+                "          ", 
+                RowBox[{
+                 RowBox[{"s2Even", "[", "\"\<Sigma2TheorMean\>\"", "]"}], " ",
+                  "-", " ", 
+                 RowBox[{"s2Even", "[", "\"\<SETheorMean\>\"", "]"}]}]}], 
+               "}"}], "]"}]}], "}"}], ",", "\n", "        ", 
+           RowBox[{"PlotStyle", " ", "->", " ", "None"}], ",", " ", 
+           RowBox[{"Filling", " ", "->", " ", 
+            RowBox[{"{", 
+             RowBox[{"1", " ", "->", " ", 
+              RowBox[{"{", "2", "}"}]}], "}"}]}], ",", "\n", "        ", 
+           RowBox[{"FillingStyle", " ", "->", " ", 
+            RowBox[{"Directive", "[", 
+             RowBox[{
+              RowBox[{"Opacity", "[", "0.15", "]"}], ",", " ", "Blue"}], 
+             "]"}]}]}], "]"}], ",", "\n", "      ", 
+         RowBox[{"ListLinePlot", "[", "\n", "        ", 
+          RowBox[{
+           RowBox[{"Transpose", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"s2Even", "[", "\"\<LValues\>\"", "]"}], ",", " ", 
+              RowBox[{"s2Even", "[", "\"\<Sigma2TheorMean\>\"", "]"}]}], 
+             "}"}], "]"}], ",", "\n", "        ", 
+           RowBox[{"PlotStyle", " ", "->", " ", 
+            RowBox[{"{", 
+             RowBox[{"Blue", ",", " ", "Thick"}], "}"}]}]}], "]"}], ",", "\n",
+          "      ", 
+         RowBox[{"(*", " ", 
+          RowBox[{"Odd", " ", "error", " ", "band"}], " ", "*)"}], "\n", 
+         "      ", 
+         RowBox[{"ListLinePlot", "[", "\n", "        ", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Transpose", "[", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"s2Odd", "[", "\"\<LValues\>\"", "]"}], ",", "\n", 
+                "          ", 
+                RowBox[{
+                 RowBox[{"s2Odd", "[", "\"\<Sigma2TheorMean\>\"", "]"}], " ", 
+                 "+", " ", 
+                 RowBox[{"s2Odd", "[", "\"\<SETheorMean\>\"", "]"}]}]}], 
+               "}"}], "]"}], ",", "\n", "         ", 
+             RowBox[{"Transpose", "[", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"s2Odd", "[", "\"\<LValues\>\"", "]"}], ",", "\n", 
+                "          ", 
+                RowBox[{
+                 RowBox[{"s2Odd", "[", "\"\<Sigma2TheorMean\>\"", "]"}], " ", 
+                 "-", " ", 
+                 RowBox[{"s2Odd", "[", "\"\<SETheorMean\>\"", "]"}]}]}], 
+               "}"}], "]"}]}], "}"}], ",", "\n", "        ", 
+           RowBox[{"PlotStyle", " ", "->", " ", "None"}], ",", " ", 
+           RowBox[{"Filling", " ", "->", " ", 
+            RowBox[{"{", 
+             RowBox[{"1", " ", "->", " ", 
+              RowBox[{"{", "2", "}"}]}], "}"}]}], ",", "\n", "        ", 
+           RowBox[{"FillingStyle", " ", "->", " ", 
+            RowBox[{"Directive", "[", 
+             RowBox[{
+              RowBox[{"Opacity", "[", "0.15", "]"}], ",", " ", 
+              RowBox[{"Darker", "[", "Green", "]"}]}], "]"}]}]}], "]"}], ",", 
+         "\n", "      ", 
+         RowBox[{"ListLinePlot", "[", "\n", "        ", 
+          RowBox[{
+           RowBox[{"Transpose", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"s2Odd", "[", "\"\<LValues\>\"", "]"}], ",", " ", 
+              RowBox[{"s2Odd", "[", "\"\<Sigma2TheorMean\>\"", "]"}]}], "}"}],
+             "]"}], ",", "\n", "        ", 
+           RowBox[{"PlotStyle", " ", "->", " ", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Darker", "[", "Green", "]"}], ",", " ", "Thick"}], 
+             "}"}]}]}], "]"}], ",", "\n", "      ", 
+         RowBox[{"(*", " ", 
+          RowBox[{"Asymptotic", " ", "+", " ", "Poisson"}], " ", "*)"}], "\n",
+          "      ", 
+         RowBox[{"Plot", "[", 
+          RowBox[{
+           RowBox[{"COEAsymptoticSigma2", "[", "L", "]"}], ",", " ", 
+           RowBox[{"{", 
+            RowBox[{"L", ",", " ", "0.5", ",", " ", "Lmax"}], "}"}], ",", 
+           "\n", "        ", 
+           RowBox[{"PlotStyle", " ", "->", " ", 
+            RowBox[{"{", 
+             RowBox[{"Orange", ",", " ", "Thick", ",", " ", "Dashed"}], 
+             "}"}]}]}], "]"}], ",", "\n", "      ", 
+         RowBox[{"Plot", "[", 
+          RowBox[{"L", ",", " ", 
+           RowBox[{"{", 
+            RowBox[{"L", ",", " ", "0.5", ",", " ", "Lmax"}], "}"}], ",", 
+           "\n", "        ", 
+           RowBox[{"PlotStyle", " ", "->", " ", 
+            RowBox[{"{", 
+             RowBox[{"Black", ",", " ", "Dashed", ",", " ", "Thin"}], 
+             "}"}]}]}], "]"}], ",", "\n", "      ", 
+         RowBox[{"Evaluate", "@", "$pOpts"}], ",", "\n", "      ", 
+         RowBox[{"FrameLabel", " ", "->", " ", 
+          RowBox[{"{", 
+           
+           RowBox[{"\"\<L\>\"", ",", "\n", 
+            "        ", "\"\<\\!\\(\\*SuperscriptBox[\\(\[Sigma]\\), \\(2\\)]\
+\\)(L)\>\""}], "}"}]}], ",", "\n", "      ", 
+         RowBox[{"PlotLabel", " ", "->", " ", 
+          RowBox[{"PlotTitle", "[", 
+           
+           RowBox[{"\"\<\\!\\(\\*SuperscriptBox[\\(\[Sigma]\\), \\(2\\)]\\)\>\
+\"", ",", " ", "j", ",", " ", "k"}], "]"}]}], ",", "\n", "      ", 
+         RowBox[{"PlotRange", " ", "->", " ", 
+          RowBox[{"{", 
+           RowBox[{"All", ",", " ", 
+            RowBox[{"{", 
+             RowBox[{"0", ",", " ", "Automatic"}], "}"}]}], "}"}]}]}], "\n", 
+        "    ", "]"}], ",", "\n", "    ", 
+       RowBox[{"Placed", "[", 
+        RowBox[{
+         RowBox[{"LineLegend", "[", "\n", "      ", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Directive", "[", 
+              RowBox[{"Blue", ",", " ", "Thick"}], "]"}], ",", " ", 
+             RowBox[{"Directive", "[", 
+              RowBox[{
+               RowBox[{"Darker", "[", "Green", "]"}], ",", " ", "Thick"}], 
+              "]"}], ",", "\n", "       ", 
+             RowBox[{"Directive", "[", 
+              RowBox[{"Red", ",", " ", "Thick"}], "]"}], ",", " ", 
+             RowBox[{"Directive", "[", 
+              RowBox[{"Orange", ",", " ", "Thick", ",", " ", "Dashed"}], 
+              "]"}], ",", "\n", "       ", 
+             RowBox[{"Directive", "[", 
+              RowBox[{"Black", ",", " ", "Dashed", ",", " ", "Thin"}], 
+              "]"}]}], "}"}], ",", "\n", "      ", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"\"\<Even (N=\>\"", " ", "<>", " ", 
+              RowBox[{"ToString", "[", "dimE", "]"}], " ", "<>", 
+              " ", "\"\<)\>\""}], ",", "\n", "       ", 
+             RowBox[{"\"\<Odd (N=\>\"", " ", "<>", " ", 
+              RowBox[{"ToString", "[", "dimO", "]"}], " ", "<>", 
+              " ", "\"\<)\>\""}], ",", "\n", "       ", 
+             RowBox[{"\"\<COE(\>\"", " ", "<>", " ", 
+              RowBox[{"ToString", "[", "nCOE", "]"}], " ", "<>", 
+              " ", "\"\<)\>\""}], ",", "\n", 
+             "       ", "\"\<COE asymptotic\>\"", ",", 
+             " ", "\"\<Poisson\>\""}], "}"}], ",", "\n", "      ", 
+           RowBox[{"LabelStyle", " ", "->", " ", 
+            RowBox[{"Directive", "[", 
+             RowBox[{"Black", ",", " ", "18"}], "]"}]}]}], "\n", "    ", 
+          "]"}], ",", " ", 
+         RowBox[{"{", 
+          RowBox[{"Right", ",", " ", "Bottom"}], "}"}]}], "]"}]}], "\n", "  ",
+       "]"}]}], ";"}], "\n", "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"MakeResidualPlot", "[", 
+      RowBox[{
+      "s2Even_", ",", " ", "s2Odd_", ",", " ", "s2COE_", ",", " ", "j_", ",", 
+       " ", "k_"}], "]"}], " ", ":=", "\n", "  ", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "nMin", ",", " ", "lR", ",", " ", "resE", ",", " ", "resO", ",", " ", 
+         "seE", ",", " ", "seO"}], "}"}], ",", "\n", "    ", 
+       RowBox[{
+        RowBox[{"nMin", " ", "=", " ", 
+         RowBox[{"Min", "[", 
+          RowBox[{
+           RowBox[{"Length", "[", 
+            RowBox[{"s2Even", "[", "\"\<LValues\>\"", "]"}], "]"}], ",", " ", 
+           RowBox[{"Length", "[", 
+            RowBox[{"s2Odd", "[", "\"\<LValues\>\"", "]"}], "]"}], ",", "\n", 
+           "               ", 
+           RowBox[{"Length", "[", 
+            RowBox[{"s2COE", "[", "\"\<LValues\>\"", "]"}], "]"}]}], "]"}]}], 
+        ";", "\n", "    ", 
+        RowBox[{"lR", " ", "=", " ", 
+         RowBox[{
+          RowBox[{"s2COE", "[", "\"\<LValues\>\"", "]"}], "[", 
+          RowBox[{"[", 
+           RowBox[{"1", " ", ";;", " ", "nMin"}], "]"}], "]"}]}], ";", "\n", 
+        "    ", 
+        RowBox[{"resE", " ", "=", " ", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"s2Even", "[", "\"\<Sigma2TheorMean\>\"", "]"}], "[", 
+           RowBox[{"[", 
+            RowBox[{"1", " ", ";;", " ", "nMin"}], "]"}], "]"}], " ", "-", 
+          "\n", "      ", 
+          RowBox[{
+           RowBox[{"s2COE", "[", "\"\<Sigma2TheorMean\>\"", "]"}], "[", 
+           RowBox[{"[", 
+            RowBox[{"1", " ", ";;", " ", "nMin"}], "]"}], "]"}]}]}], ";", 
+        "\n", "    ", 
+        RowBox[{"resO", " ", "=", " ", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"s2Odd", "[", "\"\<Sigma2TheorMean\>\"", "]"}], "[", 
+           RowBox[{"[", 
+            RowBox[{"1", " ", ";;", " ", "nMin"}], "]"}], "]"}], " ", "-", 
+          "\n", "      ", 
+          RowBox[{
+           RowBox[{"s2COE", "[", "\"\<Sigma2TheorMean\>\"", "]"}], "[", 
+           RowBox[{"[", 
+            RowBox[{"1", " ", ";;", " ", "nMin"}], "]"}], "]"}]}]}], ";", 
+        "\n", "    ", 
+        RowBox[{"seE", " ", "=", " ", 
+         RowBox[{"Sqrt", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"s2Even", "[", "\"\<SETheorMean\>\"", "]"}], "[", 
+             RowBox[{"[", 
+              RowBox[{"1", " ", ";;", " ", "nMin"}], "]"}], "]"}], "^", "2"}],
+            " ", "+", "\n", "      ", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"s2COE", "[", "\"\<SETheorMean\>\"", "]"}], "[", 
+             RowBox[{"[", 
+              RowBox[{"1", " ", ";;", " ", "nMin"}], "]"}], "]"}], "^", 
+            "2"}]}], "]"}]}], ";", "\n", "    ", 
+        RowBox[{"seO", " ", "=", " ", 
+         RowBox[{"Sqrt", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"s2Odd", "[", "\"\<SETheorMean\>\"", "]"}], "[", 
+             RowBox[{"[", 
+              RowBox[{"1", " ", ";;", " ", "nMin"}], "]"}], "]"}], "^", "2"}],
+            " ", "+", "\n", "      ", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"s2COE", "[", "\"\<SETheorMean\>\"", "]"}], "[", 
+             RowBox[{"[", 
+              RowBox[{"1", " ", ";;", " ", "nMin"}], "]"}], "]"}], "^", 
+            "2"}]}], "]"}]}], ";", "\n", "    ", 
+        RowBox[{"Legended", "[", "\n", "      ", 
+         RowBox[{
+          RowBox[{"Show", "[", "\n", "        ", 
+           RowBox[{"(*", " ", 
+            RowBox[{"Even", " ", "error", " ", "band"}], " ", "*)"}], "\n", 
+           "        ", 
+           RowBox[{
+            RowBox[{"ListLinePlot", "[", "\n", "          ", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"Transpose", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"lR", ",", " ", 
+                   RowBox[{"resE", " ", "+", " ", "seE"}]}], "}"}], "]"}], ",",
+                 " ", 
+                RowBox[{"Transpose", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"lR", ",", " ", 
+                   RowBox[{"resE", " ", "-", " ", "seE"}]}], "}"}], "]"}]}], 
+               "}"}], ",", "\n", "          ", 
+              RowBox[{"PlotStyle", " ", "->", " ", "None"}], ",", " ", 
+              RowBox[{"Filling", " ", "->", " ", 
+               RowBox[{"{", 
+                RowBox[{"1", " ", "->", " ", 
+                 RowBox[{"{", "2", "}"}]}], "}"}]}], ",", "\n", "          ", 
+              RowBox[{"FillingStyle", " ", "->", " ", 
+               RowBox[{"Directive", "[", 
+                RowBox[{
+                 RowBox[{"Opacity", "[", "0.2", "]"}], ",", " ", "Blue"}], 
+                "]"}]}]}], "]"}], ",", "\n", "        ", 
+            RowBox[{"ListLinePlot", "[", 
+             RowBox[{
+              RowBox[{"Transpose", "[", 
+               RowBox[{"{", 
+                RowBox[{"lR", ",", " ", "resE"}], "}"}], "]"}], ",", " ", 
+              RowBox[{"PlotStyle", " ", "->", " ", 
+               RowBox[{"{", 
+                RowBox[{"Blue", ",", " ", "Thick"}], "}"}]}]}], "]"}], ",", 
+            "\n", "        ", 
+            RowBox[{"(*", " ", 
+             RowBox[{"Odd", " ", "error", " ", "band"}], " ", "*)"}], "\n", 
+            "        ", 
+            RowBox[{"ListLinePlot", "[", "\n", "          ", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"Transpose", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"lR", ",", " ", 
+                   RowBox[{"resO", " ", "+", " ", "seO"}]}], "}"}], "]"}], ",",
+                 " ", 
+                RowBox[{"Transpose", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"lR", ",", " ", 
+                   RowBox[{"resO", " ", "-", " ", "seO"}]}], "}"}], "]"}]}], 
+               "}"}], ",", "\n", "          ", 
+              RowBox[{"PlotStyle", " ", "->", " ", "None"}], ",", " ", 
+              RowBox[{"Filling", " ", "->", " ", 
+               RowBox[{"{", 
+                RowBox[{"1", " ", "->", " ", 
+                 RowBox[{"{", "2", "}"}]}], "}"}]}], ",", "\n", "          ", 
+              RowBox[{"FillingStyle", " ", "->", " ", 
+               RowBox[{"Directive", "[", 
+                RowBox[{
+                 RowBox[{"Opacity", "[", "0.2", "]"}], ",", " ", 
+                 RowBox[{"Darker", "[", "Green", "]"}]}], "]"}]}]}], "]"}], ",",
+             "\n", "        ", 
+            RowBox[{"ListLinePlot", "[", 
+             RowBox[{
+              RowBox[{"Transpose", "[", 
+               RowBox[{"{", 
+                RowBox[{"lR", ",", " ", "resO"}], "}"}], "]"}], ",", "\n", 
+              "          ", 
+              RowBox[{"PlotStyle", " ", "->", " ", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"Darker", "[", "Green", "]"}], ",", " ", "Thick"}], 
+                "}"}]}]}], "]"}], ",", "\n", "        ", 
+            RowBox[{"Plot", "[", 
+             RowBox[{"0", ",", " ", 
+              RowBox[{"{", 
+               RowBox[{"x", ",", " ", "0", ",", " ", 
+                RowBox[{"Max", "[", "lR", "]"}]}], "}"}], ",", " ", 
+              RowBox[{"PlotStyle", " ", "->", " ", 
+               RowBox[{"{", 
+                RowBox[{"Red", ",", " ", "Dashed"}], "}"}]}]}], "]"}], ",", 
+            "\n", "        ", 
+            RowBox[{"Evaluate", "@", "$pOpts"}], ",", "\n", "        ", 
+            RowBox[{"FrameLabel", " ", "->", " ", 
+             RowBox[{"{", 
+              
+              RowBox[{"\"\<L\>\"", ",", "\n", 
+               "          ", "\"\<\\!\\(\\*SuperscriptBox[\\(\[Sigma]\\), \
+\\(2\\)]\\)(QKT) - \\!\\(\\*SuperscriptBox[\\(\[Sigma]\\), \\(2\\)]\\)(COE)\>\
+\""}], "}"}]}], ",", "\n", "        ", 
+            RowBox[{"PlotLabel", " ", "->", " ", 
+             RowBox[{"PlotTitle", "[", 
+              RowBox[{"\"\<Residual\>\"", ",", " ", "j", ",", " ", "k"}], 
+              "]"}]}], ",", 
+            RowBox[{"PlotRange", "->", "All"}]}], "\n", "      ", "]"}], ",", 
+          "\n", "      ", 
+          RowBox[{"Placed", "[", 
+           RowBox[{
+            RowBox[{"LineLegend", "[", "\n", "        ", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"Directive", "[", 
+                 RowBox[{"Blue", ",", " ", "Thick"}], "]"}], ",", " ", 
+                RowBox[{"Directive", "[", 
+                 RowBox[{
+                  RowBox[{"Darker", "[", "Green", "]"}], ",", " ", "Thick"}], 
+                 "]"}]}], "}"}], ",", "\n", "        ", 
+              RowBox[{"{", 
+               RowBox[{"\"\<Even - COE\>\"", ",", " ", "\"\<Odd - COE\>\""}], 
+               "}"}], ",", "\n", "        ", 
+              RowBox[{"LabelStyle", " ", "->", " ", 
+               RowBox[{"Directive", "[", 
+                RowBox[{"Black", ",", " ", "18"}], "]"}]}]}], "\n", "      ", 
+             "]"}], ",", " ", 
+            RowBox[{"{", 
+             RowBox[{"Right", ",", " ", "Top"}], "}"}]}], "]"}]}], "\n", 
+         "    ", "]"}]}]}], "\n", "  ", "]"}]}], ";"}], "\n", "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"MakeDualEstimatorPlot", "[", 
+      RowBox[{"s2_", ",", " ", "sector_", ",", " ", "j_", ",", " ", "k_"}], 
+      "]"}], " ", ":=", "\n", "  ", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", "rd", "}"}], ",", "\n", "    ", 
+       RowBox[{
+        RowBox[{"rd", " ", "=", " ", 
+         RowBox[{
+          RowBox[{"Abs", "[", 
+           RowBox[{
+            RowBox[{"s2", "[", "\"\<Sigma2TheorMean\>\"", "]"}], " ", "-", 
+            " ", 
+            RowBox[{"s2", "[", "\"\<Sigma2SampleMean\>\"", "]"}]}], "]"}], 
+          " ", "/", "\n", "      ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"s2", "[", "\"\<Sigma2TheorMean\>\"", "]"}], " ", "+", 
+            " ", 
+            RowBox[{"10", "^", 
+             RowBox[{"-", "10"}]}]}], ")"}]}]}], ";", "\n", "    ", 
+        RowBox[{"ListLinePlot", "[", 
+         RowBox[{
+          RowBox[{"Transpose", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"s2", "[", "\"\<LValues\>\"", "]"}], ",", " ", "rd"}], 
+            "}"}], "]"}], ",", "\n", "      ", 
+          RowBox[{"Filling", " ", "->", " ", "Axis"}], ",", " ", 
+          RowBox[{"FillingStyle", " ", "->", " ", 
+           RowBox[{"Directive", "[", 
+            RowBox[{
+             RowBox[{"Opacity", "[", "0.3", "]"}], ",", " ", "Blue"}], 
+            "]"}]}], ",", "\n", "      ", 
+          RowBox[{"Evaluate", "@", "$pOpts"}], ",", " ", 
+          RowBox[{"PlotRange", " ", "->", " ", 
+           RowBox[{"{", 
+            RowBox[{"0", ",", " ", "All"}], "}"}]}], ",", "\n", "      ", 
+          RowBox[{"FrameLabel", " ", "->", " ", 
+           RowBox[{"{", 
+            RowBox[{"\"\<L\>\"", ",", " ", "\"\<Relative difference\>\""}], 
+            "}"}]}], ",", "\n", "      ", 
+          RowBox[{"PlotLabel", " ", "->", " ", 
+           RowBox[{"PlotTitle", "[", 
+            RowBox[{
+             RowBox[{"sector", " ", "<>", " ", "\"\< dual estimator\>\""}], ",",
+              " ", "j", ",", " ", "k"}], "]"}]}]}], "]"}]}]}], "\n", "  ", 
+      "]"}]}], ";"}], "\n", "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"MakeNNSDPlot", "[", 
+      RowBox[{
+      "spacings_", ",", " ", "sector_", ",", " ", "j_", ",", " ", "k_"}], 
+      "]"}], " ", ":=", "\n", "  ", 
+     RowBox[{"Legended", "[", "\n", "    ", 
+      RowBox[{
+       RowBox[{"Show", "[", "\n", "      ", 
+        RowBox[{
+         RowBox[{"Histogram", "[", 
+          RowBox[{"spacings", ",", " ", 
+           RowBox[{"{", 
+            RowBox[{"0", ",", " ", "4", ",", " ", "0.05"}], "}"}], ",", 
+           " ", "\"\<ProbabilityDensity\>\"", ",", "\n", "        ", 
+           RowBox[{"ChartStyle", " ", "->", " ", 
+            RowBox[{"Directive", "[", 
+             RowBox[{"LightBlue", ",", " ", 
+              RowBox[{"EdgeForm", "[", "Gray", "]"}]}], "]"}]}], ",", "\n", 
+           "        ", 
+           RowBox[{"PlotRange", " ", "->", " ", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"0", ",", " ", "3.5"}], "}"}], ",", " ", 
+              RowBox[{"{", 
+               RowBox[{"0", ",", " ", "1.1"}], "}"}]}], "}"}]}]}], "]"}], ",",
+          "\n", "      ", 
+         RowBox[{"Plot", "[", 
+          RowBox[{
+           RowBox[{"WignerCOE", "[", "s", "]"}], ",", " ", 
+           RowBox[{"{", 
+            RowBox[{"s", ",", " ", "0", ",", " ", "3.5"}], "}"}], ",", " ", 
+           RowBox[{"PlotStyle", " ", "->", " ", 
+            RowBox[{"{", 
+             RowBox[{"Red", ",", " ", "Thick"}], "}"}]}]}], "]"}], ",", "\n", 
+         "      ", 
+         RowBox[{"Plot", "[", 
+          RowBox[{
+           RowBox[{"Exp", "[", 
+            RowBox[{"-", "s"}], "]"}], ",", " ", 
+           RowBox[{"{", 
+            RowBox[{"s", ",", " ", "0", ",", " ", "3.5"}], "}"}], ",", " ", 
+           RowBox[{"PlotStyle", " ", "->", " ", 
+            RowBox[{"{", 
+             RowBox[{"Black", ",", " ", "Dashed"}], "}"}]}]}], "]"}], ",", 
+         "\n", "      ", 
+         RowBox[{"Evaluate", "@", "$pOpts"}], ",", "\n", "      ", 
+         RowBox[{"FrameLabel", " ", "->", " ", 
+          RowBox[{"{", 
+           RowBox[{"\"\<s\>\"", ",", " ", "\"\<P(s)\>\""}], "}"}]}], ",", 
+         "\n", "      ", 
+         RowBox[{"PlotLabel", " ", "->", " ", 
+          RowBox[{"PlotTitle", "[", 
+           RowBox[{"sector", ",", " ", "j", ",", " ", "k"}], "]"}]}]}], "\n", 
+        "    ", "]"}], ",", "\n", "    ", 
+       RowBox[{"Placed", "[", 
+        RowBox[{
+         RowBox[{"LineLegend", "[", "\n", "      ", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Directive", "[", 
+              RowBox[{"Red", ",", " ", "Thick"}], "]"}], ",", " ", 
+             RowBox[{"Directive", "[", 
+              RowBox[{"Black", ",", " ", "Dashed"}], "]"}]}], "}"}], ",", 
+           "\n", "      ", 
+           RowBox[{"{", 
+            RowBox[{"\"\<COE surmise\>\"", ",", " ", "\"\<Poisson\>\""}], 
+            "}"}], ",", "\n", "      ", 
+           RowBox[{"LabelStyle", " ", "->", " ", 
+            RowBox[{"Directive", "[", 
+             RowBox[{"Black", ",", " ", "18"}], "]"}]}]}], "\n", "    ", 
+          "]"}], ",", " ", 
+         RowBox[{"{", 
+          RowBox[{"Right", ",", " ", "Top"}], "}"}]}], "]"}]}], "\n", "  ", 
+      "]"}]}], ";"}], "\n", "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"MakeCumulativePlot", "[", 
+      RowBox[{
+      "spacings_", ",", " ", "sector_", ",", " ", "j_", ",", " ", "k_"}], 
+      "]"}], " ", ":=", "\n", "  ", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"sorted", ",", " ", "nSp", ",", " ", "empCDF"}], "}"}], ",", 
+       "\n", "    ", 
+       RowBox[{
+        RowBox[{"sorted", " ", "=", " ", 
+         RowBox[{"Sort", "[", "spacings", "]"}]}], ";", "\n", "    ", 
+        RowBox[{"nSp", " ", "=", " ", 
+         RowBox[{"Length", "[", "sorted", "]"}]}], ";", "\n", "    ", 
+        RowBox[{"empCDF", " ", "=", " ", 
+         RowBox[{
+          RowBox[{"Range", "[", "nSp", "]"}], " ", "/", " ", "nSp"}]}], ";", 
+        "\n", "    ", 
+        RowBox[{"Legended", "[", "\n", "      ", 
+         RowBox[{
+          RowBox[{"Show", "[", "\n", "        ", 
+           RowBox[{
+            RowBox[{"ListLinePlot", "[", 
+             RowBox[{
+              RowBox[{"Transpose", "[", 
+               RowBox[{"{", 
+                RowBox[{"sorted", ",", " ", "empCDF"}], "}"}], "]"}], ",", 
+              "\n", "          ", 
+              RowBox[{"PlotStyle", " ", "->", " ", 
+               RowBox[{"{", 
+                RowBox[{"Blue", ",", " ", "Thick"}], "}"}]}], ",", "\n", 
+              "          ", 
+              RowBox[{"PlotRange", " ", "->", " ", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"0", ",", " ", "3.5"}], "}"}], ",", " ", 
+                 RowBox[{"{", 
+                  RowBox[{"0", ",", " ", "1"}], "}"}]}], "}"}]}]}], "]"}], ",",
+             "\n", "        ", 
+            RowBox[{"Plot", "[", 
+             RowBox[{
+              RowBox[{"IntWignerCOE", "[", "s", "]"}], ",", " ", 
+              RowBox[{"{", 
+               RowBox[{"s", ",", " ", "0", ",", " ", "3.5"}], "}"}], ",", " ", 
+              RowBox[{"PlotStyle", " ", "->", " ", 
+               RowBox[{"{", 
+                RowBox[{"Red", ",", " ", "Thick"}], "}"}]}]}], "]"}], ",", 
+            "\n", "        ", 
+            RowBox[{"Plot", "[", 
+             RowBox[{
+              RowBox[{"1", " ", "-", " ", 
+               RowBox[{"Exp", "[", 
+                RowBox[{"-", "s"}], "]"}]}], ",", " ", 
+              RowBox[{"{", 
+               RowBox[{"s", ",", " ", "0", ",", " ", "3.5"}], "}"}], ",", " ", 
+              RowBox[{"PlotStyle", " ", "->", " ", 
+               RowBox[{"{", 
+                RowBox[{"Black", ",", " ", "Dashed"}], "}"}]}]}], "]"}], ",", 
+            "\n", "        ", 
+            RowBox[{"Evaluate", "@", "$pOpts"}], ",", "\n", "        ", 
+            RowBox[{"FrameLabel", " ", "->", " ", 
+             RowBox[{"{", 
+              RowBox[{"\"\<s\>\"", ",", " ", "\"\<I(s)\>\""}], "}"}]}], ",", 
+            "\n", "        ", 
+            RowBox[{"PlotLabel", " ", "->", " ", 
+             RowBox[{"PlotTitle", "[", 
+              RowBox[{"sector", ",", " ", "j", ",", " ", "k"}], "]"}]}]}], 
+           "\n", "      ", "]"}], ",", "\n", "      ", 
+          RowBox[{"Placed", "[", 
+           RowBox[{
+            RowBox[{"LineLegend", "[", "\n", "        ", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"Directive", "[", 
+                 RowBox[{"Blue", ",", " ", "Thick"}], "]"}], ",", " ", 
+                RowBox[{"Directive", "[", 
+                 RowBox[{"Red", ",", " ", "Thick"}], "]"}], ",", "\n", 
+                "         ", 
+                RowBox[{"Directive", "[", 
+                 RowBox[{"Black", ",", " ", "Dashed"}], "]"}]}], "}"}], ",", 
+              "\n", "        ", 
+              RowBox[{"{", 
+               
+               RowBox[{"\"\<Data\>\"", ",", " ", "\"\<COE surmise\>\"", ",", 
+                " ", "\"\<Poisson\>\""}], "}"}], ",", "\n", "        ", 
+              RowBox[{"LabelStyle", " ", "->", " ", 
+               RowBox[{"Directive", "[", 
+                RowBox[{"Black", ",", " ", "18"}], "]"}]}]}], "\n", "      ", 
+             "]"}], ",", " ", 
+            RowBox[{"{", 
+             RowBox[{"Right", ",", " ", "Bottom"}], "}"}]}], "]"}]}], "\n", 
+         "    ", "]"}]}]}], "\n", "  ", "]"}]}], ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.9817778812390003`*^9, 3.9817778815827465`*^9}, {
+  3.9817781445565033`*^9, 3.9817781623734646`*^9}, {3.98177820979414*^9, 
+  3.9817782114383106`*^9}, {3.9817782616568604`*^9, 3.9817782671799984`*^9}, {
+  3.9817786164761887`*^9, 3.981778616944906*^9}},
+ CellLabel->"In[72]:=",ExpressionUUID->"48e33c32-c25c-1947-8c3e-7081fc23c1a6"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Main loop", "Chapter",
+ CellChangeTimes->{{3.9817778999681225`*^9, 
+  3.9817779013598633`*^9}},ExpressionUUID->"ed5df17e-7529-1648-b03b-\
+dcfc20968246"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+      "===", "===", "===", "===", "===", "===", "===", "===", "===", "==="}], 
+    "="}], " ", "*)"}], "\n", 
+  RowBox[{"(*", " ", 
+   RowBox[{"MAIN", " ", "LOOP"}], 
+   "                                                        ", "*)"}], "\n", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+      "===", "===", "===", "===", "===", "===", "===", "===", "===", "==="}], 
+    "="}], " ", "*)"}], "\n", "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Do", "[", "\n", "  ", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<\\n\>\"", ",", " ", 
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"\"\<=\>\"", ",", " ", "60"}], "]"}], "]"}]}], "]"}], ";", 
+       "\n", "  ", 
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<  J = \>\"", ",", " ", "j", ",", " ", "\"\<  (\>\"", ",",
+          " ", 
+         RowBox[{"jLabel", "[", "j", "]"}], ",", " ", "\"\<)\>\""}], "]"}], ";",
+        "\n", "  ", 
+       RowBox[{"Print", "[", 
+        RowBox[{"StringJoin", "[", 
+         RowBox[{"ConstantArray", "[", 
+          RowBox[{"\"\<=\>\"", ",", " ", "60"}], "]"}], "]"}], "]"}], ";", 
+       "\n", "\n", "  ", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+         RowBox[{"--", 
+          RowBox[{"-", " ", 
+           RowBox[{"Directories", " ", "--"}]}]}], "-"}], " ", "*)"}], "\n", 
+       "  ", 
+       RowBox[{"jDir", "    ", "=", " ", 
+        RowBox[{"FileNameJoin", "[", 
+         RowBox[{"{", 
+          RowBox[{"baseDir", ",", " ", "\"\<Results\>\"", ",", " ", 
+           RowBox[{"jLabel", "[", "j", "]"}]}], "}"}], "]"}]}], ";", "\n", 
+       "  ", 
+       RowBox[{"evenDir", " ", "=", " ", 
+        RowBox[{"FileNameJoin", "[", 
+         RowBox[{"{", 
+          RowBox[{"jDir", ",", " ", "\"\<Even\>\""}], "}"}], "]"}]}], ";", 
+       "\n", "  ", 
+       RowBox[{"oddDir", "  ", "=", " ", 
+        RowBox[{"FileNameJoin", "[", 
+         RowBox[{"{", 
+          RowBox[{"jDir", ",", " ", "\"\<Odd\>\""}], "}"}], "]"}]}], ";", 
+       "\n", "  ", 
+       RowBox[{"plotDir", " ", "=", " ", 
+        RowBox[{"FileNameJoin", "[", 
+         RowBox[{"{", 
+          RowBox[{"jDir", ",", " ", "\"\<plots\>\""}], "}"}], "]"}]}], ";", 
+       "\n", "  ", 
+       RowBox[{"EnsureDir", "[", "evenDir", "]"}], ";", " ", 
+       RowBox[{"EnsureDir", "[", "oddDir", "]"}], ";", " ", 
+       RowBox[{"EnsureDir", "[", "plotDir", "]"}], ";", "\n", "\n", "  ", 
+       RowBox[{"dimCOE", " ", "=", " ", 
+        RowBox[{"j", " ", "+", " ", "1"}]}], ";", "\n", "\n", "  ", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+        "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", 
+         "===", "===", "===", "===", "===", "===", "===", "===", "===", 
+         "==="}], " ", "*)"}], "\n", "  ", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+         RowBox[{"A", ".", " ", "COE"}], " ", "REFERENCE", " ", 
+         RowBox[{"(", 
+          RowBox[{"one", " ", "ensemble", " ", "per", " ", "J"}], ")"}]}], 
+        "                         ", "*)"}], "\n", "  ", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+        "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", 
+         "===", "===", "===", "===", "===", "===", "===", "===", "===", 
+         "==="}], " ", "*)"}], "\n", "\n", "  ", 
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<  Generating \>\"", ",", " ", "nCOE", ",", 
+         " ", "\"\< COE(\>\"", ",", " ", "dimCOE", ",", 
+         " ", "\"\<) matrices...\>\""}], "]"}], ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"tCOE", ",", " ", "coeSpectra"}], "}"}], " ", "=", " ", 
+        RowBox[{"AbsoluteTiming", "[", 
+         RowBox[{"GenerateCOEEnsemble", "[", 
+          RowBox[{"dimCOE", ",", " ", "nCOE"}], "]"}], "]"}]}], ";", "\n", 
+       "  ", 
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<  COE done in \>\"", ",", " ", 
+         RowBox[{"Round", "[", 
+          RowBox[{"tCOE", ",", " ", "0.1"}], "]"}], ",", " ", "\"\<s\>\""}], 
+        "]"}], ";", "\n", "\n", "  ", 
+       RowBox[{"Print", "[", "\"\<  Computing COE Sigma2...\>\"", "]"}], ";", 
+       "\n", "  ", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"tS2", ",", " ", "sigma2COE"}], "}"}], " ", "=", " ", 
+        RowBox[{"AbsoluteTiming", "[", 
+         RowBox[{"EnsembleSigma2", "[", 
+          RowBox[{"coeSpectra", ",", " ", "lDomain"}], "]"}], "]"}]}], ";", 
+       "\n", "  ", 
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<  COE Sigma2 done in \>\"", ",", " ", 
+         RowBox[{"Round", "[", 
+          RowBox[{"tS2", ",", " ", "0.1"}], "]"}], ",", " ", "\"\<s\>\""}], 
+        "]"}], ";", "\n", "\n", "  ", 
+       RowBox[{"(*", " ", 
+        RowBox[{"COE", " ", "NNSD", " ", "reference"}], " ", "*)"}], "\n", 
+       "  ", 
+       RowBox[{"allSpacingsCOE", " ", "=", " ", 
+        RowBox[{"Sort", "[", 
+         RowBox[{"Flatten", "[", 
+          RowBox[{"Map", "[", 
+           RowBox[{"NNSpacings", ",", " ", "coeSpectra"}], "]"}], "]"}], 
+         "]"}]}], ";", "\n", "\n", "  ", 
+       RowBox[{"Export", "[", 
+        RowBox[{
+         RowBox[{"FileNameJoin", "[", 
+          RowBox[{"{", 
+           RowBox[{"plotDir", ",", " ", "\"\<nnsd_coe.png\>\""}], "}"}], 
+          "]"}], ",", "\n", "    ", 
+         RowBox[{"MakeNNSDPlot", "[", 
+          RowBox[{
+          "allSpacingsCOE", ",", " ", "\"\<COE\>\"", ",", " ", "j", ",", " ", 
+           "0"}], "]"}]}], "]"}], ";", "\n", "  ", 
+       RowBox[{"Export", "[", 
+        RowBox[{
+         RowBox[{"FileNameJoin", "[", 
+          RowBox[{"{", 
+           RowBox[{"plotDir", ",", " ", "\"\<cumulative_coe.png\>\""}], "}"}],
+           "]"}], ",", "\n", "    ", 
+         RowBox[{"MakeCumulativePlot", "[", 
+          RowBox[{
+          "allSpacingsCOE", ",", " ", "\"\<COE\>\"", ",", " ", "j", ",", " ", 
+           "0"}], "]"}]}], "]"}], ";", "\n", "\n", "  ", 
+       RowBox[{"coeSpectra", " ", "=", " ", "."}], ";", " ", 
+       RowBox[{"allSpacingsCOE", " ", "=", " ", "."}], ";", "\n", "\n", "  ", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+        "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", 
+         "===", "===", "===", "===", "===", "===", "===", "===", "===", 
+         "==="}], " ", "*)"}], "\n", "  ", 
+       RowBox[{"(*", " ", 
+        RowBox[{"B", ".", " ", 
+         RowBox[{"QKT", ":", " ", 
+          RowBox[{
+          "ensemble", " ", "at", " ", "each", " ", "k", " ", "value"}]}]}], 
+        "                              ", "*)"}], "\n", "  ", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+        "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", 
+         "===", "===", "===", "===", "===", "===", "===", "===", "===", 
+         "==="}], " ", "*)"}], "\n", "\n", "  ", 
+       RowBox[{"Do", "[", "\n", "    ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"kStr", " ", "=", " ", 
+           RowBox[{"kLabel", "[", "k", "]"}]}], ";", "\n", "    ", 
+          RowBox[{"Print", "[", 
+           
+           RowBox[{"\"\<  k =\>\"", ",", " ", "kStr", ",", 
+            " ", "\"\<: generating \>\"", ",", " ", "nQKT", ",", 
+            " ", "\"\< QKT matrices...\>\""}], "]"}], ";", "\n", "\n", "    ", 
+          RowBox[{"(*", " ", 
+           RowBox[{"Generate", " ", 
+            RowBox[{"ensemble", ":", " ", 
+             RowBox[{"nQKT", " ", "matrices", " ", "with", " ", "k", " ", 
+              RowBox[{"in", " ", "[", 
+               RowBox[{
+                RowBox[{"k", "-", "delta"}], ",", " ", 
+                RowBox[{"k", "+", "delta"}]}], "]"}]}]}]}], " ", "*)"}], "\n",
+           "    ", 
+          RowBox[{"SeedRandom", "[", 
+           RowBox[{"Hash", "[", 
+            RowBox[{"{", 
+             RowBox[{"j", ",", " ", "k", ",", " ", "42"}], "}"}], "]"}], 
+           "]"}], ";", "\n", "    ", 
+          RowBox[{"kList", " ", "=", " ", 
+           RowBox[{"RandomReal", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"k", " ", "-", " ", "delta"}], ",", " ", 
+               RowBox[{"k", " ", "+", " ", "delta"}]}], "}"}], ",", " ", 
+             "nQKT"}], "]"}]}], ";", "\n", "\n", "    ", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"tDiag", ",", " ", "qktResult"}], "}"}], " ", "=", " ", 
+           RowBox[{"AbsoluteTiming", "[", "\n", "      ", 
+            RowBox[{"GenerateQKTEnsemble", "[", 
+             RowBox[{"j", ",", " ", "alpha", ",", " ", "kList"}], "]"}], "\n",
+             "    ", "]"}]}], ";", "\n", "\n", "    ", 
+          RowBox[{"evenSpectra", " ", "=", " ", 
+           RowBox[{"qktResult", "[", "\"\<Even\>\"", "]"}]}], ";", "\n", 
+          "    ", 
+          RowBox[{"oddSpectra", "  ", "=", " ", 
+           RowBox[{"qktResult", "[", "\"\<Odd\>\"", "]"}]}], ";", "\n", 
+          "    ", 
+          RowBox[{"dimE", " ", "=", " ", 
+           RowBox[{
+            RowBox[{"evenSpectra", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], "[", "\"\<N\>\"", "]"}]}], ";", 
+          "\n", "    ", 
+          RowBox[{"dimO", " ", "=", " ", 
+           RowBox[{
+            RowBox[{"oddSpectra", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], "[", "\"\<N\>\"", "]"}]}], ";", 
+          "\n", "\n", "    ", 
+          RowBox[{"Print", "[", 
+           RowBox[{"\"\<    diag: \>\"", ",", " ", 
+            RowBox[{"Round", "[", 
+             RowBox[{"tDiag", ",", " ", "0.1"}], "]"}], ",", 
+            " ", "\"\<s  [Even N =\>\"", ",", " ", "dimE", ",", "\n", 
+            "      ", "\"\<, Odd N =\>\"", ",", " ", "dimO", ",", 
+            " ", "\"\<]\>\""}], "]"}], ";", "\n", "\n", "    ", 
+          RowBox[{"(*", " ", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"--", 
+              RowBox[{"-", " ", "Save"}]}], " ", "all", " ", "spectra", " ", 
+             "for", " ", "later", " ", 
+             RowBox[{"reanalysis", " ", "--"}]}], "-"}], " ", "*)"}], "\n", 
+          "    ", 
+          RowBox[{"Export", "[", 
+           RowBox[{
+            RowBox[{"FileNameJoin", "[", 
+             RowBox[{"{", 
+              RowBox[{"evenDir", ",", " ", 
+               
+               RowBox[{"\"\<spectra_k\>\"", " ", "<>", " ", "kStr", " ", "<>",
+                 " ", "\"\<.mx\>\""}]}], "}"}], "]"}], ",", "\n", "      ", 
+            "evenSpectra"}], "]"}], ";", "\n", "    ", 
+          RowBox[{"Export", "[", 
+           RowBox[{
+            RowBox[{"FileNameJoin", "[", 
+             RowBox[{"{", 
+              RowBox[{"oddDir", ",", " ", 
+               
+               RowBox[{"\"\<spectra_k\>\"", " ", "<>", " ", "kStr", " ", "<>",
+                 " ", "\"\<.mx\>\""}]}], "}"}], "]"}], ",", "\n", "      ", 
+            "oddSpectra"}], "]"}], ";", "\n", "\n", "    ", 
+          RowBox[{"(*", " ", 
+           RowBox[{"--", 
+            RowBox[{"-", " ", 
+             RowBox[{"Spacings", ":", " ", 
+              RowBox[{
+               RowBox[{"pool", " ", "across", " ", 
+                RowBox[{"ensemble", " ", "--"}]}], "-"}]}]}]}], " ", "*)"}], 
+          "\n", "    ", 
+          RowBox[{"spacingsEven", " ", "=", " ", 
+           RowBox[{"Sort", "[", 
+            RowBox[{"Flatten", "[", 
+             RowBox[{"Map", "[", 
+              RowBox[{"NNSpacings", ",", " ", "evenSpectra"}], "]"}], "]"}], 
+            "]"}]}], ";", "\n", "    ", 
+          RowBox[{"spacingsOdd", "  ", "=", " ", 
+           RowBox[{"Sort", "[", 
+            RowBox[{"Flatten", "[", 
+             RowBox[{"Map", "[", 
+              RowBox[{"NNSpacings", ",", " ", "oddSpectra"}], "]"}], "]"}], 
+            "]"}]}], ";", "\n", "\n", "    ", 
+          RowBox[{"Export", "[", 
+           RowBox[{
+            RowBox[{"FileNameJoin", "[", 
+             RowBox[{"{", 
+              RowBox[{"evenDir", ",", " ", 
+               
+               RowBox[{"\"\<spacings_k\>\"", " ", "<>", " ", "kStr", " ", "<>",
+                 " ", "\"\<.mx\>\""}]}], "}"}], "]"}], ",", "\n", "      ", 
+            "spacingsEven"}], "]"}], ";", "\n", "    ", 
+          RowBox[{"Export", "[", 
+           RowBox[{
+            RowBox[{"FileNameJoin", "[", 
+             RowBox[{"{", 
+              RowBox[{"oddDir", ",", " ", 
+               
+               RowBox[{"\"\<spacings_k\>\"", " ", "<>", " ", "kStr", " ", "<>",
+                 " ", "\"\<.mx\>\""}]}], "}"}], "]"}], ",", "\n", "      ", 
+            "spacingsOdd"}], "]"}], ";", "\n", "\n", "    ", 
+          RowBox[{"(*", " ", 
+           RowBox[{"--", 
+            RowBox[{"-", " ", 
+             RowBox[{"Sigma2", ":", " ", 
+              RowBox[{
+               RowBox[{"ensemble", " ", 
+                RowBox[{"average", " ", "--"}]}], "-"}]}]}]}], " ", "*)"}], 
+          "\n", "    ", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"tS2E", ",", " ", "s2Even"}], "}"}], " ", "=", " ", 
+           RowBox[{"AbsoluteTiming", "[", 
+            RowBox[{"EnsembleSigma2", "[", 
+             RowBox[{"evenSpectra", ",", " ", "lDomain"}], "]"}], "]"}]}], ";",
+           "\n", "    ", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"tS2O", ",", " ", "s2Odd"}], "}"}], "  ", "=", " ", 
+           RowBox[{"AbsoluteTiming", "[", 
+            RowBox[{"EnsembleSigma2", "[", 
+             RowBox[{"oddSpectra", ",", " ", "lDomain"}], "]"}], "]"}]}], ";",
+           "\n", "    ", 
+          RowBox[{"Print", "[", 
+           RowBox[{"\"\<    sigma2: \>\"", ",", " ", 
+            RowBox[{"Round", "[", 
+             RowBox[{
+              RowBox[{"tS2E", " ", "+", " ", "tS2O"}], ",", " ", "0.1"}], 
+             "]"}], ",", " ", "\"\<s\>\""}], "]"}], ";", "\n", "\n", "    ", 
+          RowBox[{"Export", "[", 
+           RowBox[{
+            RowBox[{"FileNameJoin", "[", 
+             RowBox[{"{", 
+              RowBox[{"evenDir", ",", " ", 
+               
+               RowBox[{"\"\<sigma2_k\>\"", " ", "<>", " ", "kStr", " ", "<>", 
+                " ", "\"\<.mx\>\""}]}], "}"}], "]"}], ",", "\n", "      ", 
+            "s2Even"}], "]"}], ";", "\n", "    ", 
+          RowBox[{"Export", "[", 
+           RowBox[{
+            RowBox[{"FileNameJoin", "[", 
+             RowBox[{"{", 
+              RowBox[{"oddDir", ",", " ", 
+               
+               RowBox[{"\"\<sigma2_k\>\"", " ", "<>", " ", "kStr", " ", "<>", 
+                " ", "\"\<.mx\>\""}]}], "}"}], "]"}], ",", "\n", "      ", 
+            "s2Odd"}], "]"}], ";", "\n", "\n", "    ", 
+          RowBox[{"(*", " ", 
+           RowBox[{
+            RowBox[{"--", 
+             RowBox[{"-", " ", 
+              RowBox[{"Plots", " ", "--"}]}]}], "-"}], " ", "*)"}], "\n", 
+          "    ", 
+          RowBox[{"Export", "[", 
+           RowBox[{
+            RowBox[{"FileNameJoin", "[", 
+             RowBox[{"{", 
+              RowBox[{"plotDir", ",", " ", 
+               
+               RowBox[{"\"\<sigma2_k\>\"", " ", "<>", " ", "kStr", " ", "<>", 
+                " ", "\"\<.png\>\""}]}], "}"}], "]"}], ",", "\n", "      ", 
+            RowBox[{"MakeSigma2Plot", "[", 
+             RowBox[{
+             "s2Even", ",", " ", "s2Odd", ",", " ", "sigma2COE", ",", " ", 
+              "j", ",", " ", "k", ",", " ", "dimE", ",", " ", "dimO"}], 
+             "]"}]}], "]"}], ";", "\n", "    ", 
+          RowBox[{"Export", "[", 
+           RowBox[{
+            RowBox[{"FileNameJoin", "[", 
+             RowBox[{"{", 
+              RowBox[{"plotDir", ",", " ", 
+               
+               RowBox[{"\"\<residual_k\>\"", " ", "<>", " ", "kStr", " ", "<>",
+                 " ", "\"\<.png\>\""}]}], "}"}], "]"}], ",", "\n", "      ", 
+            RowBox[{"MakeResidualPlot", "[", 
+             RowBox[{
+             "s2Even", ",", " ", "s2Odd", ",", " ", "sigma2COE", ",", " ", 
+              "j", ",", " ", "k"}], "]"}]}], "]"}], ";", "\n", "    ", 
+          RowBox[{"Export", "[", 
+           RowBox[{
+            RowBox[{"FileNameJoin", "[", 
+             RowBox[{"{", 
+              RowBox[{"plotDir", ",", " ", 
+               
+               RowBox[{"\"\<dual_even_k\>\"", " ", "<>", " ", "kStr", " ", "<>",
+                 " ", "\"\<.png\>\""}]}], "}"}], "]"}], ",", "\n", "      ", 
+            RowBox[{"MakeDualEstimatorPlot", "[", 
+             RowBox[{
+             "s2Even", ",", " ", "\"\<Even\>\"", ",", " ", "j", ",", " ", 
+              "k"}], "]"}]}], "]"}], ";", "\n", "    ", 
+          RowBox[{"Export", "[", 
+           RowBox[{
+            RowBox[{"FileNameJoin", "[", 
+             RowBox[{"{", 
+              RowBox[{"plotDir", ",", " ", 
+               
+               RowBox[{"\"\<dual_odd_k\>\"", " ", "<>", " ", "kStr", " ", "<>",
+                 " ", "\"\<.png\>\""}]}], "}"}], "]"}], ",", "\n", "      ", 
+            RowBox[{"MakeDualEstimatorPlot", "[", 
+             RowBox[{
+             "s2Odd", ",", " ", "\"\<Odd\>\"", ",", " ", "j", ",", " ", "k"}],
+              "]"}]}], "]"}], ";", "\n", "    ", 
+          RowBox[{"Export", "[", 
+           RowBox[{
+            RowBox[{"FileNameJoin", "[", 
+             RowBox[{"{", 
+              RowBox[{"plotDir", ",", " ", 
+               
+               RowBox[{"\"\<nnsd_even_k\>\"", " ", "<>", " ", "kStr", " ", "<>",
+                 " ", "\"\<.png\>\""}]}], "}"}], "]"}], ",", "\n", "      ", 
+            RowBox[{"MakeNNSDPlot", "[", 
+             RowBox[{
+             "spacingsEven", ",", " ", "\"\<Even\>\"", ",", " ", "j", ",", 
+              " ", "k"}], "]"}]}], "]"}], ";", "\n", "    ", 
+          RowBox[{"Export", "[", 
+           RowBox[{
+            RowBox[{"FileNameJoin", "[", 
+             RowBox[{"{", 
+              RowBox[{"plotDir", ",", " ", 
+               
+               RowBox[{"\"\<nnsd_odd_k\>\"", " ", "<>", " ", "kStr", " ", "<>",
+                 " ", "\"\<.png\>\""}]}], "}"}], "]"}], ",", "\n", "      ", 
+            RowBox[{"MakeNNSDPlot", "[", 
+             RowBox[{
+             "spacingsOdd", ",", " ", "\"\<Odd\>\"", ",", " ", "j", ",", " ", 
+              "k"}], "]"}]}], "]"}], ";", "\n", "    ", 
+          RowBox[{"Export", "[", 
+           RowBox[{
+            RowBox[{"FileNameJoin", "[", 
+             RowBox[{"{", 
+              RowBox[{"plotDir", ",", " ", 
+               
+               RowBox[{"\"\<cumulative_even_k\>\"", " ", "<>", " ", "kStr", 
+                " ", "<>", " ", "\"\<.png\>\""}]}], "}"}], "]"}], ",", "\n", 
+            "      ", 
+            RowBox[{"MakeCumulativePlot", "[", 
+             RowBox[{
+             "spacingsEven", ",", " ", "\"\<Even\>\"", ",", " ", "j", ",", 
+              " ", "k"}], "]"}]}], "]"}], ";", "\n", "    ", 
+          RowBox[{"Export", "[", 
+           RowBox[{
+            RowBox[{"FileNameJoin", "[", 
+             RowBox[{"{", 
+              RowBox[{"plotDir", ",", " ", 
+               
+               RowBox[{"\"\<cumulative_odd_k\>\"", " ", "<>", " ", "kStr", 
+                " ", "<>", " ", "\"\<.png\>\""}]}], "}"}], "]"}], ",", "\n", 
+            "      ", 
+            RowBox[{"MakeCumulativePlot", "[", 
+             RowBox[{
+             "spacingsOdd", ",", " ", "\"\<Odd\>\"", ",", " ", "j", ",", " ", 
+              "k"}], "]"}]}], "]"}], ";", "\n", "\n", "    ", 
+          RowBox[{"Print", "[", 
+           
+           RowBox[{"\"\<    k=\>\"", ",", " ", "kStr", ",", 
+            " ", "\"\< DONE\>\""}], "]"}], ";", "\n", "\n", "    ", 
+          RowBox[{"(*", " ", 
+           RowBox[{
+            RowBox[{"Free", " ", "per"}], "-", 
+            RowBox[{"k", " ", "data"}]}], " ", "*)"}], "\n", "    ", 
+          RowBox[{"qktResult", " ", "=", " ", "."}], ";", " ", 
+          RowBox[{"evenSpectra", " ", "=", " ", "."}], ";", " ", 
+          RowBox[{"oddSpectra", " ", "=", " ", "."}], ";", "\n", "    ", 
+          RowBox[{"spacingsEven", " ", "=", " ", "."}], ";", " ", 
+          RowBox[{"spacingsOdd", " ", "=", " ", "."}], ";", "\n", "    ", 
+          RowBox[{"s2Even", " ", "=", " ", "."}], ";", " ", 
+          RowBox[{"s2Odd", " ", "=", " ", "."}], ";"}], "\n", "\n", "  ", ",",
+          " ", 
+         RowBox[{"{", 
+          RowBox[{"k", ",", " ", "kValues"}], "}"}]}], "]"}], ";", "\n", "\n",
+        "  ", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+        "Free", " ", "COE", " ", "Sigma2", " ", "for", " ", "this", " ", 
+         "J"}], " ", "*)"}], "\n", "  ", 
+       RowBox[{"sigma2COE", " ", "=", " ", "."}], ";", "\n", "\n", "  ", 
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<  \>\"", ",", " ", 
+         RowBox[{"jLabel", "[", "j", "]"}], ",", " ", "\"\< COMPLETE\>\""}], 
+        "]"}], ";"}], "\n", "\n", ",", " ", 
+      RowBox[{"{", 
+       RowBox[{"j", ",", " ", "jValues"}], "}"}]}], "]"}], ";"}], "\n", "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", "\"\<\\n=== ALL DONE ===\>\"", "]"}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.9817782947834873`*^9, 3.9817783541304913`*^9}, {
+  3.981778445571615*^9, 3.9817784662014465`*^9}, {3.9817785340060825`*^9, 
+  3.9817785695625496`*^9}},
+ CellLabel->"In[82]:=",ExpressionUUID->"acd1d259-7cfa-0645-8afa-5ef73d2f5749"]
+}, Open  ]]
+},
+WindowSize->{1645.7142857142856`, 858},
+WindowMargins->{{
+  Automatic, -5.14285714285711}, {-5.14285714285711, Automatic}},
+CellContext->Notebook,
+InputAliases-><|"intt" -> RowBox[{"\[Integral]", 
+     RowBox[{"\[SelectionPlaceholder]", 
+       RowBox[{"\[DifferentialD]", "\[Placeholder]"}]}]}], "dintt" -> RowBox[{
+     SubsuperscriptBox[
+     "\[Integral]", "\[SelectionPlaceholder]", "\[Placeholder]"], 
+     RowBox[{"\[Placeholder]", 
+       RowBox[{"\[DifferentialD]", "\[Placeholder]"}]}]}], "rintt" -> RowBox[{
+     UnderscriptBox["\[Integral]", 
+      RowBox[{"\[SelectionPlaceholder]", "\[Element]", "\[Placeholder]"}]], 
+     "\[Placeholder]"}], "sumt" -> RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"\[SelectionPlaceholder]", "=", "\[Placeholder]"}], 
+      "\[Placeholder]"], "\[Placeholder]"}], "prodt" -> RowBox[{
+     UnderoverscriptBox["\[Product]", 
+      RowBox[{"\[SelectionPlaceholder]", "=", "\[Placeholder]"}], 
+      "\[Placeholder]"], "\[Placeholder]"}], "dt" -> RowBox[{
+     SubscriptBox["\[PartialD]", "\[SelectionPlaceholder]"], 
+     "\[Placeholder]"}], "cbrt" -> 
+  RadicalBox[
+   "\[SelectionPlaceholder]", "3", SurdForm -> True, MultilineFunction -> 
+    None], "surd" -> 
+  RadicalBox[
+   "\[SelectionPlaceholder]", "\[Placeholder]", SurdForm -> True, 
+    MultilineFunction -> None], "ket" -> 
+  TemplateBox[{"\[SelectionPlaceholder]"}, "Ket"], "bra" -> 
+  TemplateBox[{"\[SelectionPlaceholder]"}, "Bra"], "braket" -> 
+  TemplateBox[{"\[SelectionPlaceholder]", "\[Placeholder]"}, "BraKet"], 
+  "delay" -> TemplateBox[{"\[SelectionPlaceholder]"}, "SystemsModelDelay"], 
+  "grad" -> RowBox[{
+     SubscriptBox["\[Del]", "\[SelectionPlaceholder]"], "\[Placeholder]"}], 
+  "del." -> RowBox[{
+     SubscriptBox["\[Del]", "\[SelectionPlaceholder]"], ".", 
+     "\[Placeholder]"}], "delx" -> RowBox[{
+     SubscriptBox["\[Del]", "\[SelectionPlaceholder]"], "\[Cross]", 
+     "\[Placeholder]"}], "del2" -> RowBox[{
+     SubsuperscriptBox["\[Del]", "\[SelectionPlaceholder]", 2], 
+     "\[Placeholder]"}], "kd" -> 
+  TemplateBox[{"\[SelectionPlaceholder]"}, "KroneckerDeltaSeq"], "algs" -> 
+  TemplateBox[{}, "Algebraics"], "bools" -> TemplateBox[{}, "Booleans"], 
+  "comps" -> TemplateBox[{}, "Complexes"], "ints" -> 
+  TemplateBox[{}, "Integers"], "pris" -> TemplateBox[{}, "Primes"], "rats" -> 
+  TemplateBox[{}, "Rationals"], "reals" -> TemplateBox[{}, "Reals"], "pints" -> 
+  TemplateBox[{}, "PositiveIntegers"], "npints" -> 
+  TemplateBox[{}, "NonPositiveIntegers"], "nnints" -> 
+  TemplateBox[{}, "NonNegativeIntegers"], "nints" -> 
+  TemplateBox[{}, "NegativeIntegers"], "prats" -> 
+  TemplateBox[{}, "PositiveRationals"], "nprats" -> 
+  TemplateBox[{}, "NonPositiveRationals"], "nnrats" -> 
+  TemplateBox[{}, "NonNegativeRationals"], "nrats" -> 
+  TemplateBox[{}, "NegativeRationals"], "preals" -> 
+  TemplateBox[{}, "PositiveReals"], "npreals" -> 
+  TemplateBox[{}, "NonPositiveReals"], "nnreals" -> 
+  TemplateBox[{}, "NonNegativeReals"], "nreals" -> 
+  TemplateBox[{}, "NegativeReals"], "dlim" -> RowBox[{
+     UnderscriptBox["\[Limit]", 
+      RowBox[{"\[SelectionPlaceholder]", 
+        UnderscriptBox["\[Rule]", 
+         TemplateBox[{}, "Integers"]], "\[Infinity]"}]], "\[Placeholder]"}], 
+  "dMlim" -> RowBox[{
+     UnderscriptBox["\[MaxLimit]", 
+      RowBox[{"\[SelectionPlaceholder]", 
+        UnderscriptBox["\[Rule]", 
+         TemplateBox[{}, "Integers"]], "\[Infinity]"}]], "\[Placeholder]"}], 
+  "dmlim" -> RowBox[{
+     UnderscriptBox["\[MinLimit]", 
+      RowBox[{"\[SelectionPlaceholder]", 
+        UnderscriptBox["\[Rule]", 
+         TemplateBox[{}, "Integers"]], "\[Infinity]"}]], "\[Placeholder]"}], 
+  "tue" -> OverscriptBox["\[UndirectedEdge]", "\[Placeholder]"], "tde" -> 
+  OverscriptBox["\[DirectedEdge]", "\[Placeholder]"], "cB" -> 
+  TemplateBox[{}, "CombinatorB"], "cC" -> TemplateBox[{}, "CombinatorC"], 
+  "cI" -> TemplateBox[{}, "CombinatorI"], "cK" -> 
+  TemplateBox[{}, "CombinatorK"], "cS" -> TemplateBox[{}, "CombinatorS"], 
+  "cW" -> TemplateBox[{}, "CombinatorW"], "cY" -> 
+  TemplateBox[{}, "CombinatorY"], "notation" -> RowBox[{"Notation", "[", 
+     RowBox[{
+       TemplateBox[{"\[SelectionPlaceholder]"}, "NotationTemplateTag"], " ", 
+       "\[DoubleLongLeftRightArrow]", " ", 
+       TemplateBox[{"\[Placeholder]"}, "NotationTemplateTag"]}], "]"}], 
+  "notation>" -> RowBox[{"Notation", "[", 
+     RowBox[{
+       TemplateBox[{"\[SelectionPlaceholder]"}, "NotationTemplateTag"], " ", 
+       "\[DoubleLongRightArrow]", " ", 
+       TemplateBox[{"\[Placeholder]"}, "NotationTemplateTag"]}], "]"}], 
+  "notation<" -> RowBox[{"Notation", "[", 
+     RowBox[{
+       TemplateBox[{"\[SelectionPlaceholder]"}, "NotationTemplateTag"], " ", 
+       "\[DoubleLongLeftArrow]", " ", 
+       TemplateBox[{"\[Placeholder]"}, "NotationTemplateTag"]}], "]"}], 
+  "symb" -> RowBox[{"Symbolize", "[", 
+     TemplateBox[{"\[SelectionPlaceholder]"}, "NotationTemplateTag"], "]"}], 
+  "infixnotation" -> RowBox[{"InfixNotation", "[", 
+     RowBox[{
+       TemplateBox[{"\[SelectionPlaceholder]"}, "NotationTemplateTag"], ",", 
+       "\[Placeholder]"}], "]"}], "addia" -> RowBox[{"AddInputAlias", "[", 
+     RowBox[{"\"\[SelectionPlaceholder]\"", "\[Rule]", 
+       TemplateBox[{"\[Placeholder]"}, "NotationTemplateTag"]}], "]"}], 
+  "pattwraper" -> 
+  TemplateBox[{"\[SelectionPlaceholder]"}, "NotationPatternTag"], 
+  "madeboxeswraper" -> 
+  TemplateBox[{"\[SelectionPlaceholder]"}, "NotationMadeBoxesTag"], "cf" -> 
+  SubscriptBox["&", "\[Placeholder]"]|>,
+FrontEndVersion->"14.3 for Microsoft Windows (64-bit) (July 8, 2025)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"084976a4-7deb-4544-bfcc-788afebd5b53"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[576, 22, 152, 3, 67, "Chapter",ExpressionUUID->"df35d458-8f23-5948-9519-fecbae577a78"],
+Cell[731, 27, 581, 16, 85, "Input",ExpressionUUID->"4a2075c2-3cab-5e4e-915a-781d98e9b1f9"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1349, 48, 162, 3, 67, "Chapter",ExpressionUUID->"38de49bc-c767-d442-a6ba-414d8c5d8d69"],
+Cell[1514, 53, 1588, 41, 180, "Input",ExpressionUUID->"bf4bf41b-1b84-1e4e-b037-47d0f96cd791"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3139, 99, 152, 3, 67, "Chapter",ExpressionUUID->"c4883b4e-7fd1-9940-be42-482bcb1cb562"],
+Cell[3294, 104, 32895, 753, 3357, "Input",ExpressionUUID->"48e33c32-c25c-1947-8c3e-7081fc23c1a6"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[36226, 862, 158, 3, 56, "Chapter",ExpressionUUID->"ed5df17e-7529-1648-b03b-dcfc20968246"],
+Cell[36387, 867, 21109, 476, 2368, "Input",ExpressionUUID->"acd1d259-7cfa-0645-8afa-5ef73d2f5749"]
+}, Open  ]]
+}
+]
+*)
+
