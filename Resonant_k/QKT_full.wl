@@ -137,7 +137,7 @@ Begin["`Private`"];
 (*Routine definitions*)
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Quantum definitions*)
 
 
@@ -163,9 +163,11 @@ sy[j_] := sy[j] = (1/(2 I)) (sp[j] - sm[j]);
 
 (* 5. Matrix multiplication of sparse arrays *)
 sx2[j_] := sx2[j] = sx[j] . sx[j];
+sy2[j_] := sy2[j] = sy[j] . sy[j];
+sz2[j_] := sz2[j] = sz[j] . sz[j];
 
 
-generateSpinOperators[j_] := <|"Sx" -> sx[j], "Sy" -> sy[j], "Sz" -> sz[j], "Sx2" -> sx2[j]|>;
+generateSpinOperators[j_] := <|"Sx" -> sx[j], "Sy" -> sy[j], "Sz" -> sz[j], "Sx2" -> sx2[j],"Sy2" -> sy2[j],"Sz2" -> sz2[j]|>;
 
 
 (* ------------------------------------------------------------------ *)
@@ -215,7 +217,7 @@ Floqn[j_, \[Alpha]_, k_, nVec_] := twistPart[j, k] . twistPartGeneral[j, \[Alpha
 MeanLevelSpacingRatio[eigenvalues_] := Mean[Min /@ Transpose[{#, 1/#}] &[Ratios[Differences[Sort[eigenvalues]]]]];
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Parity Decomposition*)
 
 
