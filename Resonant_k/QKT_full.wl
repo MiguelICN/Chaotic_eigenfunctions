@@ -18,7 +18,7 @@ BeginPackage["QKT`"];
 <<ForScience`;
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Usage definitions*)
 
 
@@ -33,6 +33,9 @@ Floq::usage = "Floq[j, \[Alpha], k] returns the Floquet operator exp(-ik Sx^2/(2
 
 
 Floqsym::usage = "Floqsym[j, \[Alpha], k] returns the symmetrized Floquet operator exp(-i\[Alpha] Sz/2) exp(-ik Sx^2/(2j)) exp(-i\[Alpha] Sz/2).";
+
+
+Floqsymb::usage = "Floqsym[j, \[Alpha], k] returns the symmetrized Floquet operator exp(-i\[Alpha] Sz/2) exp(-ik Sx/(2j)) exp(-i\[Alpha] Sz/2).";
 
 
 Floqn::usage = "Floqn[j, \[Alpha], k, nVec] returns the Floquet operator with twist along Sx and rotation along nVec.";
@@ -198,11 +201,13 @@ generateCoherentStateCompiler[] := Compile[{{J, _Integer}, {q, _Real}, {p, _Real
 
 
 twistPart[j_, k_] := MatrixExp[(-I k/(2 j)) sx2[j]];
+twistPartb[j_, k_] := MatrixExp[(-I k/(2 j)) sx[j]];
 freePart[j_, \[Alpha]_] := SparseArray[Band[{1, 1}] -> Exp[-I \[Alpha] Range[j, -j, -1]]];
 
 
 Floq[j_, \[Alpha]_, k_] := twistPart[j, k] . freePart[j, \[Alpha]];
 Floqsym[j_, \[Alpha]_, k_] := freePart[j, \[Alpha]/2] . twistPart[j, k] . freePart[j, \[Alpha]/2];
+Floqsymb[j_, \[Alpha]_, k_] := freePart[j, \[Alpha]/2] . twistPartb[j, k] . freePart[j, \[Alpha]/2];
 
 
 twistPartGeneral[j_, \[Alpha]_, nVec_] := twistPartGeneral[j, \[Alpha], nVec] = Module[{u = Normalize[nVec], gen},
